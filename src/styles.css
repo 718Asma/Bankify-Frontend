@@ -38,3 +38,57 @@ body {
 .mat-mdc-snack-bar-action {
   color: rgba(255, 255, 255, 0.85) !important;
 }
+/* ── ADD THIS TO YOUR EXISTING styles.css ────────────────────────────────── */
+
+/* Luxury dark dropdown menu */
+.luxury-menu .mat-mdc-menu-panel {
+  background: #0D0D0F !important;
+  border: 1px solid rgba(201, 168, 76, 0.25) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(201, 168, 76, 0.05) !important;
+  min-width: 200px !important;
+}
+
+.luxury-menu .mat-mdc-menu-item {
+  color: #C0B49A !important;
+  font-size: 13px !important;
+  letter-spacing: 0.02em;
+}
+
+.luxury-menu .mat-mdc-menu-item .mat-icon {
+  color: rgba(201, 168, 76, 0.6) !important;
+  font-size: 18px !important;
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+}
+
+.luxury-menu .mat-mdc-menu-item:hover {
+  background: rgba(201, 168, 76, 0.08) !important;
+  color: #E2C47A !important;
+}
+
+.luxury-menu .logout-item {
+  color: #c0392b !important;
+}
+
+.luxury-menu .logout-item .mat-icon {
+  color: #c0392b !important;
+  opacity: 0.7;
+}
+
+.luxury-menu mat-divider {
+  border-color: rgba(201, 168, 76, 0.15) !important;
+}
+/* ── ADD THIS TO styles.css — MatDialog dark overlay ─────────────────────── */
+
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(2px);
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}

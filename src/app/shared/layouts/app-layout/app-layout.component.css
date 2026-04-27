@@ -1,0 +1,75 @@
+/* ── Tokens ──────────────────────────────────────────────────────────────── */
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+  --navbar-height: 64px;
+  --sidebar-width: 220px;
+  --bg-page:       #0F0F12;
+  --gold-border:   rgba(201, 168, 76, 0.12);
+}
+
+/* ── Full-screen shell ───────────────────────────────────────────────────── */
+.layout-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg-page);
+}
+
+/* ── Navbar strip ────────────────────────────────────────────────────────── */
+.layout-navbar {
+  flex-shrink: 0;
+  height: var(--navbar-height);
+}
+
+/* ── Below navbar: sidebar + content ────────────────────────────────────── */
+.layout-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+.layout-sidebar {
+  flex-shrink: 0;
+  width: var(--sidebar-width);
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── Main content area ───────────────────────────────────────────────────── */
+.layout-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg-page);
+  /* subtle grid texture */
+  background-image:
+    linear-gradient(rgba(201, 168, 76, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 168, 76, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.content-inner {
+  padding: 32px 36px;
+  min-height: 100%;
+}
+
+/* ── Scrollbar styling ───────────────────────────────────────────────────── */
+.layout-content::-webkit-scrollbar,
+.layout-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.layout-content::-webkit-scrollbar-track,
+.layout-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.layout-content::-webkit-scrollbar-thumb,
+.layout-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 76, 0.2);
+  border-radius: 2px;
+}

@@ -1,0 +1,51 @@
+<nav class="navbar">
+  <!-- Left: Brand -->
+  <div class="navbar-brand">
+    <div class="brand-icon">
+      <span class="brand-icon-inner">B</span>
+    </div>
+    <span class="brand-name">BANKIFY</span>
+  </div>
+
+  <!-- Center: Decorative rule -->
+  <div class="navbar-center">
+    <div class="divider-line"></div>
+    <span class="divider-diamond">◆</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Right: Actions -->
+  <div class="navbar-actions">
+    <!-- Notification bell (decorative) -->
+    <button mat-icon-button class="icon-btn" matTooltip="Notifications">
+      <mat-icon class="nav-icon">notifications_none</mat-icon>
+      <span class="notif-dot"></span>
+    </button>
+
+    <!-- User menu -->
+    <button class="user-chip" [matMenuTriggerFor]="userMenu">
+      <div class="user-avatar">{{ initials }}</div>
+      <div class="user-info">
+        <span class="user-name">{{ fullName }}</span>
+        <span class="user-role">{{ user?.role }}</span>
+      </div>
+      <mat-icon class="chevron-icon">expand_more</mat-icon>
+    </button>
+
+    <mat-menu #userMenu="matMenu" class="luxury-menu" xPosition="before">
+      <button mat-menu-item (click)="goToProfile()">
+        <mat-icon>person_outline</mat-icon>
+        <span>Mon profil</span>
+      </button>
+      <button mat-menu-item routerLink="/profile/change-password">
+        <mat-icon>lock_outline</mat-icon>
+        <span>Changer mot de passe</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()" class="logout-item">
+        <mat-icon>logout</mat-icon>
+        <span>Déconnexion</span>
+      </button>
+    </mat-menu>
+  </div>
+</nav>

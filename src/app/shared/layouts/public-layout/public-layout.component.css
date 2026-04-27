@@ -1,0 +1,148 @@
+/* ── Tokens ──────────────────────────────────────────────────────────────── */
+:host {
+  --gold:          #C9A84C;
+  --gold-light:    #E2C47A;
+  --gold-dim:      rgba(201, 168, 76, 0.1);
+  --gold-border:   rgba(201, 168, 76, 0.2);
+  --surface:       #08080A;
+  --surface-card:  #0E0E12;
+  --surface-card2: #13131A;
+  --text-primary:  #F0EAD6;
+  --text-muted:    #4A4540;
+  --font-display:  'Cormorant Garamond', 'Garamond', serif;
+  --font-body:     'Roboto', sans-serif;
+}
+
+/* ── Full-screen shell ───────────────────────────────────────────────────── */
+.public-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Decorative corner ornaments ─────────────────────────────────────────── */
+.bg-ornament {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-ornament--tl {
+  top: -200px;
+  left: -200px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+}
+
+.bg-ornament--br {
+  bottom: -200px;
+  right: -200px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.public-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 24px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(45deg);
+}
+
+.brand-icon span {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gold);
+  transform: rotate(-45deg);
+  display: block;
+  line-height: 1;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+}
+
+/* ── Main centered area ──────────────────────────────────────────────────── */
+.public-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.public-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--surface-card);
+  border: 1px solid var(--gold-border);
+  position: relative;
+  box-shadow:
+    0 0 0 1px rgba(201, 168, 76, 0.04),
+    0 24px 64px rgba(0, 0, 0, 0.7),
+    0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* Gold top accent line */
+.card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.public-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px 28px;
+}
+
+.footer-line {
+  width: 120px;
+  height: 1px;
+  background: var(--gold-border);
+}
+
+.footer-text {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}

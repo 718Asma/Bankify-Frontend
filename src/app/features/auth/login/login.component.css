@@ -1,0 +1,222 @@
+:host {
+  --gold:          #C9A84C;
+  --gold-light:    #E2C47A;
+  --gold-dim:      rgba(201, 168, 76, 0.1);
+  --gold-border:   rgba(201, 168, 76, 0.22);
+  --surface-input: #0A0A0D;
+  --surface-hover: #111116;
+  --text-primary:  #F0EAD6;
+  --text-secondary:#8B8070;
+  --text-muted:    #4A4540;
+  --error:         #e74c3c;
+  --error-dim:     rgba(231, 76, 60, 0.12);
+  --font-display:  'Cormorant Garamond', 'Garamond', serif;
+  --font-body:     'Roboto', sans-serif;
+}
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+.login-wrap {
+  padding: 36px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.header-ornament {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.orn-line {
+  flex: 1;
+  height: 1px;
+  background: var(--gold-border);
+}
+
+.orn-diamond {
+  font-size: 7px;
+  color: var(--gold);
+  opacity: 0.6;
+}
+
+.login-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.login-subtitle {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── Form ────────────────────────────────────────────────────────────────── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Field group */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+/* Input wrapper */
+.field-input-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--surface-input);
+  border: 1px solid var(--gold-border);
+  transition: border-color 0.2s;
+  position: relative;
+}
+
+.field-input-wrap:focus-within {
+  border-color: var(--gold);
+}
+
+.has-error .field-input-wrap {
+  border-color: var(--error);
+  background: var(--error-dim);
+}
+
+.field-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  margin: 0 12px;
+  flex-shrink: 0;
+}
+
+.field-input {
+  flex: 1;
+  padding: 11px 12px 11px 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  caret-color: var(--gold);
+}
+
+.field-input::placeholder {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Show/hide password toggle */
+.toggle-pw {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.toggle-pw:hover { color: var(--gold); }
+
+.toggle-pw mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* Error message */
+.field-error {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--error);
+  letter-spacing: 0.03em;
+}
+
+/* ── Forgot password ─────────────────────────────────────────────────────── */
+.forgot-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -8px;
+}
+
+.forgot-link {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: color 0.2s;
+}
+
+.forgot-link:hover { color: var(--gold); }
+
+/* ── Submit button ───────────────────────────────────────────────────────── */
+.btn-submit {
+  margin-top: 4px;
+  width: 100%;
+  padding: 13px;
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-border);
+  color: var(--gold-light);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+  min-height: 46px;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: rgba(201, 168, 76, 0.2);
+  border-color: var(--gold);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Footer ornament ─────────────────────────────────────────────────────── */
+.login-footer {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+}
+
+.login-footer .orn-line {
+  width: 60px;
+  background: var(--gold-border);
+  height: 1px;
+  flex: unset;
+}

@@ -3,19 +3,27 @@ import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
-  // ── Public routes (no auth) ──────────────────────────────────────────────
+
+  // ── Public routes (PublicLayout) ─────────────────────────────────────────
   {
-    path: 'login',
+    path: '',
     loadComponent: () =>
-      import('./features/auth/login/login.component').then(m => m.LoginComponent),
-  },
-  {
-    path: 'reset-password',
-    loadComponent: () =>
-      import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
+      import('./shared/layouts/public-layout/public-layout.component').then(m => m.PublicLayoutComponent),
+    children: [
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./features/auth/login/login.component').then(m => m.LoginComponent),
+      },
+      {
+        path: 'reset-password',
+        loadComponent: () =>
+          import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
+      },
+    ],
   },
 
-  // ── Protected routes (auth required) ────────────────────────────────────
+  // ── Protected routes (AppLayout) ─────────────────────────────────────────
   {
     path: '',
     canActivate: [authGuard],
@@ -55,7 +63,7 @@ export const routes: Routes = [
     ],
   },
 
-  // ── Default redirect ─────────────────────────────────────────────────────
+  // ── Default redirect ──────────────────────────────────────────────────────
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' },
 ];

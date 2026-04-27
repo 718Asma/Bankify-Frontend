@@ -1,1 +1,133 @@
-<p>profile works!</p>
+<div class="page-wrap">
+
+  <!-- Loading state -->
+  <div class="loading-wrap" *ngIf="loadingData">
+    <app-loading-spinner message="Chargement du profil..." />
+  </div>
+
+  <ng-container *ngIf="!loadingData">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <div class="header-ornament">
+        <div class="orn-line"></div>
+        <span class="orn-diamond">◆</span>
+        <div class="orn-line"></div>
+      </div>
+      <h1 class="page-title">Mon Profil</h1>
+      <p class="page-subtitle">Gérez vos informations personnelles</p>
+    </div>
+
+    <div class="profile-layout">
+
+      <!-- Left: Avatar card -->
+      <div class="avatar-card">
+        <div class="card-accent"></div>
+        <div class="avatar-wrap">
+          <div class="avatar">{{ initials }}</div>
+          <div class="avatar-ring"></div>
+        </div>
+        <div class="avatar-name">{{ profile?.prenom }} {{ profile?.nom }}</div>
+        <div class="avatar-cin">CIN: {{ profile?.cin }}</div>
+
+        <div class="avatar-divider"></div>
+
+        <button class="btn-change-pw" (click)="goChangePassword()">
+          <mat-icon>lock_outline</mat-icon>
+          <span>Changer mot de passe</span>
+        </button>
+      </div>
+
+      <!-- Right: Edit form card -->
+      <div class="form-card">
+        <div class="card-accent"></div>
+
+        <div class="form-card-header">
+          <span class="form-card-title">Informations personnelles</span>
+        </div>
+
+        <form class="form" (ngSubmit)="submit()" novalidate>
+
+          <!-- Row: nom + prenom -->
+          <div class="field-row">
+            <div class="field-group" [class.has-error]="prenom.invalid && prenom.touched">
+              <label class="field-label">Prénom</label>
+              <div class="field-input-wrap">
+                <mat-icon class="field-icon">person_outline</mat-icon>
+                <input class="field-input" type="text" placeholder="Prénom" [formControl]="prenom" />
+              </div>
+              <div class="field-error" *ngIf="prenom.touched && prenom.errors?.['required']">Requis.</div>
+            </div>
+
+            <div class="field-group" [class.has-error]="nom.invalid && nom.touched">
+              <label class="field-label">Nom</label>
+              <div class="field-input-wrap">
+                <mat-icon class="field-icon">person_outline</mat-icon>
+                <input class="field-input" type="text" placeholder="Nom" [formControl]="nom" />
+              </div>
+              <div class="field-error" *ngIf="nom.touched && nom.errors?.['required']">Requis.</div>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="field-group" [class.has-error]="email.invalid && email.touched">
+            <label class="field-label">Email</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">mail_outline</mat-icon>
+              <input class="field-input" type="email" placeholder="email@exemple.com" [formControl]="email" />
+            </div>
+            <div class="field-error" *ngIf="email.touched && email.errors">
+              <span *ngIf="email.errors?.['required']">Requis.</span>
+              <span *ngIf="email.errors?.['email']">Format email invalide.</span>
+            </div>
+          </div>
+
+          <!-- Row: téléphone + date naissance -->
+          <div class="field-row">
+            <div class="field-group" [class.has-error]="telephone.invalid && telephone.touched">
+              <label class="field-label">Téléphone</label>
+              <div class="field-input-wrap">
+                <mat-icon class="field-icon">phone_outline</mat-icon>
+                <input class="field-input" type="tel" placeholder="12345678" [formControl]="telephone" />
+              </div>
+              <div class="field-error" *ngIf="telephone.touched && telephone.errors">
+                <span *ngIf="telephone.errors?.['required']">Requis.</span>
+                <span *ngIf="telephone.errors?.['pattern']">8 à 15 chiffres.</span>
+              </div>
+            </div>
+
+            <div class="field-group" [class.has-error]="dateNaissance.invalid && dateNaissance.touched">
+              <label class="field-label">Date de naissance</label>
+              <div class="field-input-wrap">
+                <mat-icon class="field-icon">cake</mat-icon>
+                <input class="field-input" type="date" [formControl]="dateNaissance" />
+              </div>
+              <div class="field-error" *ngIf="dateNaissance.touched && dateNaissance.errors?.['required']">Requis.</div>
+            </div>
+          </div>
+
+          <!-- Adresse -->
+          <div class="field-group" [class.has-error]="adresse.invalid && adresse.touched">
+            <label class="field-label">Adresse</label>
+            <div class="field-input-wrap textarea-wrap">
+              <mat-icon class="field-icon" style="align-self:flex-start;margin-top:12px">home_outline</mat-icon>
+              <textarea class="field-input field-textarea" placeholder="Votre adresse complète" [formControl]="adresse" rows="2"></textarea>
+            </div>
+            <div class="field-error" *ngIf="adresse.touched && adresse.errors?.['required']">Requis.</div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" [disabled]="loadingSave">
+              <app-loading-spinner *ngIf="loadingSave" />
+              <span *ngIf="!loadingSave">ENREGISTRER</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </ng-container>
+
+</div>

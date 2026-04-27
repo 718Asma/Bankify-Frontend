@@ -1,0 +1,39 @@
+<aside class="sidebar">
+
+  <!-- Top ornament -->
+  <div class="sidebar-ornament">
+    <div class="orn-line"></div>
+    <span class="orn-diamond">◆</span>
+    <div class="orn-line"></div>
+  </div>
+
+  <!-- Role badge -->
+  <div class="role-badge">
+    <span class="role-text">{{ role }}</span>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <a
+      *ngFor="let link of links"
+      [routerLink]="link.route"
+      routerLinkActive="active"
+      class="nav-item"
+      [matTooltip]="link.label"
+      matTooltipPosition="right"
+    >
+      <div class="nav-icon-wrap">
+        <mat-icon class="nav-icon">{{ link.icon }}</mat-icon>
+      </div>
+      <span class="nav-label">{{ link.label }}</span>
+      <div class="nav-indicator"></div>
+    </a>
+  </nav>
+
+  <!-- Bottom ornament -->
+  <div class="sidebar-footer">
+    <div class="footer-line"></div>
+    <span class="footer-copy">BANKIFY © {{ year }}</span>
+  </div>
+
+</aside>
