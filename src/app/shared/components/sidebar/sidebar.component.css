@@ -1,40 +1,41 @@
-/* ── Tokens ──────────────────────────────────────────────────────────────── */
 :host {
-  --gold:           #C9A84C;
-  --gold-light:     #E2C47A;
-  --gold-dim:       rgba(201, 168, 76, 0.12);
-  --gold-border:    rgba(201, 168, 76, 0.2);
-  --surface:        #0A0A0C;
-  --surface-2:      #111115;
-  --surface-hover:  #161619;
-  --text-primary:   #D4C5A9;
-  --text-muted:     #5A5248;
-  --sidebar-width:  220px;
+  --navy:        #0f2535;
+  --navy-mid:    #1a3a4a;
+  --navy-dark:   #0a1e2c;
+  --teal:        #1a4a5a;
+  --gold:        #C9A84C;
+  --gold-light:  #E2C47A;
+  --gold-dim:    rgba(201,168,76,0.1);
+  --gold-border: rgba(201,168,76,0.18);
+  --text-primary:   #d8e8f0;
+  --text-muted:     rgba(180,205,220,0.4);
+  --font-display:'Cormorant Garamond','Garamond',serif;
+  --font-body:   'Roboto',sans-serif;
 }
 
 /* ── Shell ───────────────────────────────────────────────────────────────── */
 .sidebar {
-  width: var(--sidebar-width);
+  width: 220px;
   height: 100%;
-  background: var(--surface);
-  border-right: 1px solid var(--gold-border);
+  background: var(--navy-mid);
+  border-right: 1px solid rgba(201,168,76,0.12);
   display: flex;
   flex-direction: column;
-  padding: 24px 0 20px;
+  padding: 20px 0 16px;
   position: relative;
   overflow: hidden;
 }
 
-/* Subtle vertical gold shimmer on right edge */
-.sidebar::after {
+/* Subtle grid */
+.sidebar::before {
   content: '';
   position: absolute;
-  top: 15%;
-  bottom: 15%;
-  right: 0;
-  width: 1px;
-  background: linear-gradient(180deg, transparent, var(--gold) 50%, transparent);
-  opacity: 0.3;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
 }
 
 /* ── Top ornament ────────────────────────────────────────────────────────── */
@@ -42,46 +43,41 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 20px 20px;
+  padding: 0 18px 16px;
+  position: relative;
+  z-index: 1;
 }
-
-.orn-line {
-  flex: 1;
-  height: 1px;
-  background: var(--gold-border);
-}
-
-.orn-diamond {
-  font-size: 6px;
-  color: var(--gold);
-  opacity: 0.6;
-}
+.orn-line    { flex: 1; height: 1px; background: var(--gold-border); }
+.orn-diamond { font-size: 6px; color: var(--gold); opacity: 0.5; }
 
 /* ── Role badge ──────────────────────────────────────────────────────────── */
 .role-badge {
-  margin: 0 16px 24px;
-  padding: 5px 12px;
+  margin: 0 14px 20px;
+  padding: 5px 10px;
   border: 1px solid var(--gold-border);
   background: var(--gold-dim);
+  border-radius: 4px;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
-
 .role-text {
-  font-family: 'Roboto', sans-serif;
-  font-size: 10px;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: 10px; font-weight: 500;
   letter-spacing: 0.2em;
   color: var(--gold);
   text-transform: uppercase;
 }
 
-/* ── Navigation ──────────────────────────────────────────────────────────── */
+/* ── Nav ─────────────────────────────────────────────────────────────────── */
 .sidebar-nav {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding: 0 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .nav-item {
@@ -89,96 +85,74 @@
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  border-radius: 2px;
+  border-radius: 6px;
   text-decoration: none;
   color: var(--text-muted);
   position: relative;
   transition: color 0.2s, background 0.2s;
-  cursor: pointer;
   overflow: hidden;
 }
 
 .nav-item:hover {
-  background: var(--surface-hover);
+  background: rgba(255,255,255,0.05);
   color: var(--text-primary);
 }
 
 .nav-item.active {
-  background: var(--gold-dim);
+  background: rgba(201,168,76,0.1);
   color: var(--gold-light);
 }
 
-/* Active left indicator bar */
+/* Left active indicator */
 .nav-indicator {
   position: absolute;
-  left: 0;
-  top: 20%;
-  bottom: 20%;
-  width: 2px;
+  left: 0; top: 20%; bottom: 20%;
+  width: 3px;
   background: var(--gold);
-  border-radius: 0 2px 2px 0;
+  border-radius: 0 3px 3px 0;
   opacity: 0;
   transition: opacity 0.2s;
 }
+.nav-item.active .nav-indicator { opacity: 1; }
 
-.nav-item.active .nav-indicator {
-  opacity: 1;
-}
-
-/* Icon */
 .nav-icon-wrap {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-
 .nav-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+  font-size: 20px; width: 20px; height: 20px;
   transition: color 0.2s;
 }
+.nav-item.active .nav-icon { color: var(--gold); }
 
-.nav-item.active .nav-icon {
-  color: var(--gold);
-}
-
-/* Label */
 .nav-label {
-  font-family: 'Roboto', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.nav-item.active .nav-label {
-  font-weight: 500;
-}
+.nav-item.active .nav-label { font-weight: 500; }
 
 /* ── Footer ──────────────────────────────────────────────────────────────── */
 .sidebar-footer {
-  padding: 20px 20px 0;
+  padding: 16px 18px 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
 }
-
 .footer-line {
   width: 100%;
   height: 1px;
   background: var(--gold-border);
 }
-
 .footer-copy {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-body);
   font-size: 10px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: var(--text-muted);
 }

@@ -1,60 +1,77 @@
-<div class="page-wrap">
+<div class="page-shell">
 
-  <!-- Loading state -->
-  <div class="loading-wrap" *ngIf="loadingData">
+  <!-- Loading fullscreen -->
+  <div class="loading-screen" *ngIf="loadingData">
     <app-loading-spinner message="Chargement du profil..." />
   </div>
 
   <ng-container *ngIf="!loadingData">
 
-    <!-- Page header -->
-    <div class="page-header">
-      <div class="header-ornament">
-        <div class="orn-line"></div>
-        <span class="orn-diamond">◆</span>
-        <div class="orn-line"></div>
+    <!-- LEFT panel -->
+    <div class="left-panel">
+      <div class="brand">
+        <div class="brand-icon"><span>B</span></div>
+        <span class="brand-name">BANKIFY</span>
       </div>
-      <h1 class="page-title">Mon Profil</h1>
-      <p class="page-subtitle">Gérez vos informations personnelles</p>
-    </div>
 
-    <div class="profile-layout">
-
-      <!-- Left: Avatar card -->
-      <div class="avatar-card">
-        <div class="card-accent"></div>
+      <div class="left-content">
+        <!-- Avatar -->
         <div class="avatar-wrap">
           <div class="avatar">{{ initials }}</div>
           <div class="avatar-ring"></div>
         </div>
-        <div class="avatar-name">{{ profile?.prenom }} {{ profile?.nom }}</div>
-        <div class="avatar-cin">CIN: {{ profile?.cin }}</div>
 
-        <div class="avatar-divider"></div>
+        <div class="user-info">
+          <div class="user-name">{{ profile?.prenom }} {{ profile?.nom }}</div>
+          <div class="user-cin">CIN : {{ profile?.cin }}</div>
+        </div>
 
+        <div class="info-divider"></div>
+
+        <!-- Quick info -->
+        <div class="info-list">
+          <div class="info-item">
+            <mat-icon class="info-icon">mail_outline</mat-icon>
+            <span>{{ profile?.email }}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon class="info-icon">phone</mat-icon>
+            <span>{{ profile?.telephone }}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon class="info-icon">cake</mat-icon>
+            <span>{{ profile?.dateNaissance }}</span>
+          </div>
+        </div>
+
+        <div class="info-divider"></div>
+
+        <!-- Change password button -->
         <button class="btn-change-pw" (click)="goChangePassword()">
           <mat-icon>lock_outline</mat-icon>
           <span>Changer mot de passe</span>
         </button>
       </div>
+    </div>
 
-      <!-- Right: Edit form card -->
-      <div class="form-card">
-        <div class="card-accent"></div>
+    <!-- RIGHT panel -->
+    <div class="right-panel">
+      <div class="form-wrap">
 
-        <div class="form-card-header">
-          <span class="form-card-title">Informations personnelles</span>
+        <div class="form-header">
+          <h1 class="form-title">Informations personnelles</h1>
+          <p class="form-subtitle">Modifiez vos coordonnées ci-dessous.</p>
         </div>
 
         <form class="form" (ngSubmit)="submit()" novalidate>
 
-          <!-- Row: nom + prenom -->
+          <!-- Row: prenom + nom -->
           <div class="field-row">
             <div class="field-group" [class.has-error]="prenom.invalid && prenom.touched">
               <label class="field-label">Prénom</label>
               <div class="field-input-wrap">
                 <mat-icon class="field-icon">person_outline</mat-icon>
-                <input class="field-input" type="text" placeholder="Prénom" [formControl]="prenom" />
+                <input class="field-input" type="text" placeholder="Prénom" [formControl]="prenom"/>
               </div>
               <div class="field-error" *ngIf="prenom.touched && prenom.errors?.['required']">Requis.</div>
             </div>
@@ -63,7 +80,7 @@
               <label class="field-label">Nom</label>
               <div class="field-input-wrap">
                 <mat-icon class="field-icon">person_outline</mat-icon>
-                <input class="field-input" type="text" placeholder="Nom" [formControl]="nom" />
+                <input class="field-input" type="text" placeholder="Nom" [formControl]="nom"/>
               </div>
               <div class="field-error" *ngIf="nom.touched && nom.errors?.['required']">Requis.</div>
             </div>
@@ -74,21 +91,21 @@
             <label class="field-label">Email</label>
             <div class="field-input-wrap">
               <mat-icon class="field-icon">mail_outline</mat-icon>
-              <input class="field-input" type="email" placeholder="email@exemple.com" [formControl]="email" />
+              <input class="field-input" type="email" placeholder="email@exemple.com" [formControl]="email"/>
             </div>
             <div class="field-error" *ngIf="email.touched && email.errors">
               <span *ngIf="email.errors?.['required']">Requis.</span>
-              <span *ngIf="email.errors?.['email']">Format email invalide.</span>
+              <span *ngIf="email.errors?.['email']">Format invalide.</span>
             </div>
           </div>
 
-          <!-- Row: téléphone + date naissance -->
+          <!-- Row: telephone + dateNaissance -->
           <div class="field-row">
             <div class="field-group" [class.has-error]="telephone.invalid && telephone.touched">
               <label class="field-label">Téléphone</label>
               <div class="field-input-wrap">
-                <mat-icon class="field-icon">phone_outline</mat-icon>
-                <input class="field-input" type="tel" placeholder="12345678" [formControl]="telephone" />
+                <mat-icon class="field-icon">phone</mat-icon>
+                <input class="field-input" type="tel" placeholder="12345678" [formControl]="telephone"/>
               </div>
               <div class="field-error" *ngIf="telephone.touched && telephone.errors">
                 <span *ngIf="telephone.errors?.['required']">Requis.</span>
@@ -100,7 +117,7 @@
               <label class="field-label">Date de naissance</label>
               <div class="field-input-wrap">
                 <mat-icon class="field-icon">cake</mat-icon>
-                <input class="field-input" type="date" [formControl]="dateNaissance" />
+                <input class="field-input" type="date" [formControl]="dateNaissance"/>
               </div>
               <div class="field-error" *ngIf="dateNaissance.touched && dateNaissance.errors?.['required']">Requis.</div>
             </div>
@@ -110,8 +127,9 @@
           <div class="field-group" [class.has-error]="adresse.invalid && adresse.touched">
             <label class="field-label">Adresse</label>
             <div class="field-input-wrap textarea-wrap">
-              <mat-icon class="field-icon" style="align-self:flex-start;margin-top:12px">home_outline</mat-icon>
-              <textarea class="field-input field-textarea" placeholder="Votre adresse complète" [formControl]="adresse" rows="2"></textarea>
+              <mat-icon class="field-icon" style="align-self:flex-start;margin-top:13px">home_outline</mat-icon>
+              <textarea class="field-input field-textarea" placeholder="Votre adresse complète"
+                [formControl]="adresse" rows="2"></textarea>
             </div>
             <div class="field-error" *ngIf="adresse.touched && adresse.errors?.['required']">Requis.</div>
           </div>
@@ -120,14 +138,16 @@
           <div class="form-actions">
             <button type="submit" class="btn-submit" [disabled]="loadingSave">
               <app-loading-spinner *ngIf="loadingSave" />
-              <span *ngIf="!loadingSave">ENREGISTRER</span>
+              <ng-container *ngIf="!loadingSave">
+                <span>Enregistrer</span>
+                <mat-icon>arrow_forward</mat-icon>
+              </ng-container>
             </button>
           </div>
 
         </form>
       </div>
-
     </div>
-  </ng-container>
 
+  </ng-container>
 </div>

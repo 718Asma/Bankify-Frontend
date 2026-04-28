@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -13,6 +13,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterLink,
     MatIconModule,
     LoadingSpinnerComponent,
   ],
@@ -36,8 +37,8 @@ export class LoginComponent {
     });
   }
 
-  get cin()        { return this.form.get('cin')! as FormControl; }
-  get motDePasse() { return this.form.get('motDePasse')! as FormControl; }
+  get cin()        { return this.form.get('cin') as FormControl; }
+  get motDePasse() { return this.form.get('motDePasse') as FormControl; }
 
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
@@ -46,7 +47,7 @@ export class LoginComponent {
     this.auth.login(this.form.value).subscribe({
       next: (res) => {
         this.loading = false;
-        const route = res.role === 'AGENT' ? '/dashboard/agent' : '/dashboard/client';
+        const route = res.role === 'AGENT' ? '/app/dashboard/agent' : '/app/dashboard/client';
         this.router.navigate([route]);
       },
       error: (err) => {

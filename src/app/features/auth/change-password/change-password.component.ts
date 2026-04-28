@@ -23,7 +23,7 @@ function passwordsMatch(group: AbstractControl): ValidationErrors | null {
 })
 export class ChangePasswordComponent {
   form: FormGroup;
-  loading = false;
+  loadingSave = false;
   show = { current: false, newPw: false, confirm: false };
 
   constructor(
@@ -47,7 +47,7 @@ export class ChangePasswordComponent {
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
 
-    this.loading = true;
+    this.loadingSave = true;
     const body = {
       ancienMotDePasse: this.form.value.currentPassword,
       nouveauMotDePasse: this.form.value.newPassword,
@@ -55,12 +55,12 @@ export class ChangePasswordComponent {
 
     this.http.patch(`${environment.apiUrl}/api/clients/mot-de-passe`, body).subscribe({
       next: () => {
-        this.loading = false;
+        this.loadingSave = false;
         this.notify.success('Mot de passe modifié avec succès.');
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/app/profile']);
       },
       error: (err) => {
-        this.loading = false;
+        this.loadingSave = false;
         const msg = err.error?.message ?? 'Erreur lors du changement de mot de passe.';
         this.notify.error(msg);
       },

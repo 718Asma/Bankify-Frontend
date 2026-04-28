@@ -92,3 +92,33 @@ body {
   box-shadow: none !important;
   border-radius: 0 !important;
 }
+/* ── ADD TO styles.css — Navbar dropdown ─────────────────────────────────── */
+
+.navbar-menu .mat-mdc-menu-panel {
+  background: #0f2535 !important;
+  border: 1px solid rgba(201,168,76,0.2) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+  min-width: 200px !important;
+}
+
+.navbar-menu .mat-mdc-menu-item {
+  color: #c8d7e0 !important;
+  font-size: 13px !important;
+}
+
+.navbar-menu .mat-mdc-menu-item .mat-icon {
+  color: rgba(201,168,76,0.6) !important;
+  font-size: 18px !important;
+  width: 18px; height: 18px;
+  margin-right: 12px;
+}
+
+.navbar-menu .mat-mdc-menu-item:hover {
+  background: rgba(201,168,76,0.08) !important;
+  color: #E2C47A !important;
+}
+
+.navbar-menu .logout-item { color: #e74c3c !important; }
+.navbar-menu .logout-item .mat-icon { color: #e74c3c !important; opacity: 0.7; }
+.navbar-menu mat-divider { border-color: rgba(201,168,76,0.12) !important; }

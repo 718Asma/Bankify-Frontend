@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit {
     private router: Router,
   ) {
     this.form = this.fb.group({
-      cin:           [{ value: '', disabled: true }],   // read-only
+      cin:           [{ value: '', disabled: true }],
       nom:           ['', Validators.required],
       prenom:        ['', Validators.required],
       email:         ['', [Validators.required, Validators.email]],
@@ -64,12 +64,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  get nom()           { return this.form.get('nom')! as FormControl; }
-  get prenom()        { return this.form.get('prenom')! as FormControl; }
-  get email()         { return this.form.get('email')! as FormControl; }
-  get telephone()     { return this.form.get('telephone')! as FormControl; }
-  get adresse()       { return this.form.get('adresse')! as FormControl; }
-  get dateNaissance() { return this.form.get('dateNaissance')! as FormControl; }
+  get nom()           { return this.form.get('nom') as FormControl; }
+  get prenom()        { return this.form.get('prenom') as FormControl; }
+  get email()         { return this.form.get('email') as FormControl; }
+  get telephone()     { return this.form.get('telephone') as FormControl; }
+  get adresse()       { return this.form.get('adresse') as FormControl; }
+  get dateNaissance() { return this.form.get('dateNaissance') as FormControl; }
 
   get initials(): string {
     if (!this.profile) return '?';
@@ -80,8 +80,7 @@ export class ProfileComponent implements OnInit {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
 
     this.loadingSave = true;
-    const body = this.form.getRawValue();
-    // remove cin — not editable
+    const body = { ...this.form.getRawValue() };
     delete body['cin'];
 
     this.http.put(this.apiUrl, body).subscribe({
@@ -98,6 +97,6 @@ export class ProfileComponent implements OnInit {
   }
 
   goChangePassword(): void {
-    this.router.navigate(['/profile/change-password']);
+    this.router.navigate(['/app/profile/change-password']);
   }
 }

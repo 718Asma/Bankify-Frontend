@@ -12,19 +12,21 @@ interface NavItem {
 }
 
 const CLIENT_LINKS: NavItem[] = [
-  { label: 'Dashboard',               icon: 'grid_view',       route: '/dashboard/client' },
-  { label: 'Mes comptes',             icon: 'account_balance', route: '/accounts' },
-  { label: 'Virements',               icon: 'swap_horiz',      route: '/transfers' },
-  { label: 'Historique transactions', icon: 'receipt_long',    route: '/transactions' },
-  { label: 'Mon profil',              icon: 'person_outline',  route: '/profile' },
+  { label: 'Dashboard',               icon: 'grid_view',       route: '/app/dashboard/client' },
+  { label: 'Mes comptes',             icon: 'account_balance', route: '/app/accounts' },
+  { label: 'Virements',               icon: 'swap_horiz',      route: '/app/transfer' },
+  { label: 'Dépôt',                   icon: 'add_circle_outline', route: '/app/deposit' },
+  { label: 'Retrait',                 icon: 'remove_circle_outline', route: '/app/withdraw' },
+  { label: 'Relevé de compte',        icon: 'receipt_long',    route: '/app/statement' },
+  { label: 'Mon profil',              icon: 'person_outline',  route: '/app/profile' },
 ];
 
 const AGENT_LINKS: NavItem[] = [
-  { label: 'Dashboard',           icon: 'grid_view',        route: '/dashboard/agent' },
-  { label: 'Gestion clients',     icon: 'people_outline',   route: '/clients' },
-  { label: 'Gestion comptes',     icon: 'account_balance',  route: '/accounts' },
-  { label: 'Demandes en attente', icon: 'pending_actions',  route: '/requests' },
-  { label: 'Mon profil',          icon: 'person_outline',   route: '/profile' },
+  { label: 'Dashboard',           icon: 'grid_view',        route: '/app/dashboard/agent' },
+  { label: 'Gestion clients',     icon: 'people_outline',   route: '/app/clients' },
+  { label: 'Gestion comptes',     icon: 'account_balance',  route: '/app/accounts' },
+  { label: 'Demandes en attente', icon: 'pending_actions',  route: '/app/requests' },
+  { label: 'Mon profil',          icon: 'person_outline',   route: '/app/profile' },
 ];
 
 @Component({

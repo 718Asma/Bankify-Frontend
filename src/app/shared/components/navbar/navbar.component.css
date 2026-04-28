@@ -1,16 +1,17 @@
-/* ── Tokens ──────────────────────────────────────────────────────────────── */
 :host {
+  --navy:        #0f2535;
+  --navy-mid:    #1a3a4a;
+  --teal:        #1a4a5a;
   --gold:        #C9A84C;
   --gold-light:  #E2C47A;
-  --gold-dim:    rgba(201, 168, 76, 0.15);
-  --surface:     #0D0D0F;
-  --surface-2:   #151519;
-  --surface-3:   #1E1E24;
-  --border:      rgba(201, 168, 76, 0.2);
-  --text-primary:   #F0EAD6;
-  --text-secondary: #8B8070;
-  --font-display: 'Cormorant Garamond', 'Garamond', serif;
-  --font-body:    'Roboto', sans-serif;
+  --gold-dim:    rgba(201,168,76,0.12);
+  --gold-border: rgba(201,168,76,0.25);
+  --white:       #ffffff;
+  --gray-100:    #f7f8fa;
+  --gray-200:    #eef0f3;
+  --gray-400:    #9aa3b0;
+  --font-display:'Cormorant Garamond','Garamond',serif;
+  --font-body:   'Roboto',sans-serif;
 }
 
 /* ── Navbar shell ────────────────────────────────────────────────────────── */
@@ -19,19 +20,19 @@
   align-items: center;
   height: 64px;
   padding: 0 28px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  background: var(--navy);
+  border-bottom: 1px solid rgba(201,168,76,0.15);
   position: relative;
   z-index: 100;
-  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
 }
 
-/* subtle gold gradient line at very top */
+/* Gold top line */
 .navbar::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 1px;
+  height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
@@ -44,35 +45,28 @@
 }
 
 .brand-icon {
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  width: 34px; height: 34px;
+  border: 1.5px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
   transform: rotate(45deg);
+  background: rgba(201,168,76,0.08);
 }
-
-.brand-icon-inner {
+.brand-icon span {
   font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px; font-weight: 700;
   color: var(--gold);
   transform: rotate(-45deg);
-  display: block;
-  line-height: 1;
+  display: block; line-height: 1;
 }
 
 .brand-name {
   font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 0.25em;
+  font-size: 19px; font-weight: 700;
+  letter-spacing: 0.28em;
   color: var(--gold);
 }
 
-/* ── Center divider ──────────────────────────────────────────────────────── */
+/* ── Center ──────────────────────────────────────────────────────────────── */
 .navbar-center {
   flex: 1;
   display: flex;
@@ -81,23 +75,14 @@
   gap: 12px;
   padding: 0 24px;
 }
-
 .divider-line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border));
-  max-width: 200px;
+  flex: 1; height: 1px; max-width: 180px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2));
 }
-
 .divider-line:last-child {
-  background: linear-gradient(270deg, transparent, var(--border));
+  background: linear-gradient(270deg, transparent, rgba(201,168,76,0.2));
 }
-
-.divider-diamond {
-  font-size: 7px;
-  color: var(--gold);
-  opacity: 0.5;
-}
+.divider-diamond { font-size: 6px; color: var(--gold); opacity: 0.4; }
 
 /* ── Actions ─────────────────────────────────────────────────────────────── */
 .navbar-actions {
@@ -107,32 +92,22 @@
   flex-shrink: 0;
 }
 
-/* Notification button */
+/* Bell */
 .icon-btn {
-  color: var(--text-secondary) !important;
+  color: rgba(201,168,76,0.5) !important;
   position: relative;
   transition: color 0.2s;
 }
-
-.icon-btn:hover {
-  color: var(--gold) !important;
-}
-
-.nav-icon {
-  font-size: 22px;
-  width: 22px;
-  height: 22px;
-}
+.icon-btn:hover { color: var(--gold) !important; }
+.nav-icon { font-size: 22px; width: 22px; height: 22px; }
 
 .notif-dot {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 6px;
-  height: 6px;
+  top: 8px; right: 8px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: var(--gold);
-  border: 1px solid var(--surface);
+  border: 1.5px solid var(--navy);
 }
 
 /* User chip */
@@ -140,67 +115,46 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 6px 12px 6px 6px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  padding: 5px 12px 5px 5px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(201,168,76,0.2);
   border-radius: 40px;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
   outline: none;
 }
-
 .user-chip:hover {
-  background: var(--surface-3);
+  background: rgba(255,255,255,0.1);
   border-color: var(--gold);
 }
 
 .user-avatar {
-  width: 32px;
-  height: 32px;
+  width: 32px; height: 32px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--gold), #8B6914);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--surface);
+  font-size: 13px; font-weight: 700;
+  color: var(--navy);
   flex-shrink: 0;
-  letter-spacing: 0.05em;
 }
 
 .user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1px;
+  display: flex; flex-direction: column;
+  align-items: flex-start; gap: 1px;
 }
-
 .user-name {
   font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-  line-height: 1;
-  white-space: nowrap;
+  font-size: 13px; font-weight: 500;
+  color: #e8dfc8; line-height: 1; white-space: nowrap;
 }
-
 .user-role {
   font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 400;
-  color: var(--gold);
-  letter-spacing: 0.1em;
-  line-height: 1;
+  font-size: 10px; color: var(--gold);
+  letter-spacing: 0.1em; line-height: 1;
 }
 
 .chevron-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  color: var(--text-secondary);
+  font-size: 18px; width: 18px; height: 18px;
+  color: rgba(201,168,76,0.5);
 }
-
-/* ── Dropdown menu (global styles go in styles.css) ──────────────────────── */
-/* See styles.css for .luxury-menu panel overrides */

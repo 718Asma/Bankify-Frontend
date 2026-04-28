@@ -4,12 +4,13 @@ import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
 
-  // ── Public routes (PublicLayout) ─────────────────────────────────────────
+  // ── Public layout ────────────────────────────────────────────────────────
   {
     path: '',
     loadComponent: () =>
       import('./shared/layouts/public-layout/public-layout.component').then(m => m.PublicLayoutComponent),
     children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
       {
         path: 'login',
         loadComponent: () =>
@@ -20,18 +21,19 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
       },
+      // TODO sprint2: reset-password/confirm (ResetPasswordConfirmComponent)
     ],
   },
 
-  // ── Protected routes (AppLayout) ─────────────────────────────────────────
+  // ── Protected layout ─────────────────────────────────────────────────────
   {
-    path: '',
+    path: 'app',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./shared/layouts/app-layout/app-layout.component').then(m => m.AppLayoutComponent),
     children: [
 
-      // Profile (CLIENT + AGENT)
+      // Profile
       {
         path: 'profile',
         loadComponent: () =>
@@ -43,7 +45,7 @@ export const routes: Routes = [
           import('./features/auth/change-password/change-password.component').then(m => m.ChangePasswordComponent),
       },
 
-      // CLIENT dashboard
+      // Client dashboard
       {
         path: 'dashboard/client',
         canActivate: [roleGuard],
@@ -52,7 +54,7 @@ export const routes: Routes = [
           import('./features/client/client-dashboard/client-dashboard.component').then(m => m.ClientDashboardComponent),
       },
 
-      // AGENT dashboard
+      // Agent dashboard
       {
         path: 'dashboard/agent',
         canActivate: [roleGuard],
@@ -60,10 +62,17 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/agent/agent-dashboard/agent-dashboard.component').then(m => m.AgentDashboardComponent),
       },
+
+      // TODO sprint2: uncomment as components are created
+      // { path: 'accounts',      ... AccountListComponent    }
+      // { path: 'accounts/:rib', ... AccountDetailComponent  }
+      // { path: 'transfer',      ... TransferComponent       }
+      // { path: 'deposit',       ... DepositComponent        }
+      // { path: 'withdraw',      ... WithdrawComponent       }
+      // { path: 'statement',     ... StatementComponent      }
     ],
   },
 
-  // ── Default redirect ──────────────────────────────────────────────────────
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // ── Fallback ─────────────────────────────────────────────────────────────
   { path: '**', redirectTo: 'login' },
 ];

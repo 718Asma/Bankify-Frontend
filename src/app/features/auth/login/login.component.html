@@ -1,82 +1,154 @@
-<div class="login-wrap">
+<div class="login-shell">
 
-  <!-- Header -->
-  <div class="login-header">
-    <div class="header-ornament">
-      <div class="orn-line"></div>
-      <span class="orn-diamond">◆</span>
-      <div class="orn-line"></div>
+  <!-- LEFT COLUMN -->
+  <div class="left-col">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-icon"><span>B</span></div>
+      <span class="brand-name">BANKIFY</span>
     </div>
-    <h1 class="login-title">Connexion</h1>
-    <p class="login-subtitle">Accédez à votre espace personnel</p>
+
+    <!-- Illustration -->
+    <div class="illustration-wrap">
+      <!-- Animated SVG illustration -->
+      <svg class="illustration" viewBox="0 0 340 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Building base -->
+        <rect x="90" y="120" width="160" height="130" rx="2" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1"/>
+        <!-- Building columns -->
+        <rect x="105" y="135" width="18" height="100" rx="1" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+        <rect x="135" y="135" width="18" height="100" rx="1" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+        <rect x="165" y="135" width="18" height="100" rx="1" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+        <rect x="195" y="135" width="18" height="100" rx="1" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+        <rect x="225" y="135" width="18" height="100" rx="1" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+        <!-- Roof / pediment -->
+        <polygon points="80,120 170,70 260,120" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1"/>
+        <!-- Pediment detail -->
+        <polygon points="110,120 170,88 230,120" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+        <!-- Top ornament -->
+        <rect x="163" y="62" width="14" height="8" rx="1" fill="#C9A84C"/>
+        <!-- Steps -->
+        <rect x="75" y="248" width="190" height="8" rx="1" fill="#1a3a4a" stroke="#C9A84C" stroke-width="0.5"/>
+        <rect x="65" y="254" width="210" height="8" rx="1" fill="#162d3d" stroke="#C9A84C" stroke-width="0.5"/>
+        <!-- Door -->
+        <rect x="152" y="195" width="36" height="55" rx="2" fill="#0a1e2c" stroke="#C9A84C" stroke-width="1"/>
+        <circle cx="183" cy="223" r="2" fill="#C9A84C"/>
+        <!-- Windows glow -->
+        <rect x="107" y="148" width="14" height="18" rx="1" fill="#C9A84C" opacity="0.15"/>
+        <rect x="137" y="148" width="14" height="18" rx="1" fill="#C9A84C" opacity="0.25"/>
+        <rect x="197" y="148" width="14" height="18" rx="1" fill="#C9A84C" opacity="0.2"/>
+        <rect x="227" y="148" width="14" height="18" rx="1" fill="#C9A84C" opacity="0.15"/>
+        <rect x="107" y="178" width="14" height="18" rx="1" fill="#C9A84C" opacity="0.1"/>
+        <rect x="137" y="178" width="14" height="18" rx="1" fill="#C9A84C" opacity="0.15"/>
+        <rect x="197" y="178" width="14" height="18" rx="1" fill="#C9A84C" opacity="0.1"/>
+        <rect x="227" y="178" width="14" height="18" rx="1" fill="#C9A84C" opacity="0.2"/>
+        <!-- Gold glow under building -->
+        <ellipse cx="170" cy="265" rx="90" ry="8" fill="#C9A84C" opacity="0.08"/>
+        <!-- Stars / particles -->
+        <circle cx="50" cy="60" r="1.5" fill="#C9A84C" opacity="0.6"/>
+        <circle cx="290" cy="45" r="1" fill="#C9A84C" opacity="0.4"/>
+        <circle cx="310" cy="100" r="1.5" fill="#C9A84C" opacity="0.5"/>
+        <circle cx="30" cy="150" r="1" fill="#C9A84C" opacity="0.3"/>
+        <circle cx="305" cy="200" r="1.5" fill="#C9A84C" opacity="0.4"/>
+        <circle cx="55" cy="220" r="1" fill="#C9A84C" opacity="0.5"/>
+        <circle cx="270" cy="260" r="1" fill="#C9A84C" opacity="0.3"/>
+      </svg>
+    </div>
+
+    <!-- Slogan -->
+    <div class="slogan">
+      <h2 class="slogan-title">Votre banque de confiance</h2>
+      <p class="slogan-text">Gérez vos finances avec sécurité et élégance.</p>
+    </div>
+
+    <!-- Feature badge -->
+    <div class="feature-badge">
+      <div class="badge-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+          <path d="M9 12l2 2 4-4" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="badge-title">Sécurité de niveau bancaire</div>
+        <div class="badge-sub">Vos données protégées par chiffrement SSL</div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Form -->
-  <form class="login-form" (ngSubmit)="submit()" novalidate>
+  <!-- RIGHT COLUMN -->
+  <div class="right-col">
+    <div class="form-wrap">
 
-    <!-- CIN -->
-    <div class="field-group" [class.has-error]="cin.invalid && cin.touched">
-      <label class="field-label">Numéro CIN</label>
-      <div class="field-input-wrap">
-        <mat-icon class="field-icon">badge</mat-icon>
-        <input
-          class="field-input"
-          type="text"
-          inputmode="numeric"
-          placeholder="Ex: 12345678"
-          [formControl]="cin"
-          autocomplete="username"
-        />
+      <!-- Header -->
+      <div class="form-header">
+        <h1 class="form-title">Accès sécurisé</h1>
+        <p class="form-subtitle">Entrez vos identifiants pour accéder à votre espace.</p>
       </div>
-      <div class="field-error" *ngIf="cin.touched && cin.errors">
-        <span *ngIf="cin.errors?.['required']">Le CIN est requis.</span>
-        <span *ngIf="cin.errors?.['pattern']">Le CIN doit contenir uniquement des chiffres.</span>
-      </div>
-    </div>
 
-    <!-- Password -->
-    <div class="field-group" [class.has-error]="motDePasse.invalid && motDePasse.touched">
-      <label class="field-label">Mot de passe</label>
-      <div class="field-input-wrap">
-        <mat-icon class="field-icon">lock_outline</mat-icon>
-        <input
-          class="field-input"
-          [type]="showPassword ? 'text' : 'password'"
-          placeholder="••••••••"
-          [formControl]="motDePasse"
-          autocomplete="current-password"
-        />
-        <button
-          type="button"
-          class="toggle-pw"
-          (click)="showPassword = !showPassword"
-          [attr.aria-label]="showPassword ? 'Masquer' : 'Afficher'"
-        >
-          <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      <!-- Form -->
+      <form class="form" (ngSubmit)="submit()" novalidate>
+
+        <!-- CIN -->
+        <div class="field-group" [class.has-error]="cin.invalid && cin.touched">
+          <label class="field-label">Numéro CIN</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">badge</mat-icon>
+            <input
+              class="field-input"
+              type="text"
+              inputmode="numeric"
+              placeholder="Entrez votre CIN"
+              [formControl]="cin"
+              autocomplete="username"
+            />
+          </div>
+          <div class="field-error" *ngIf="cin.touched && cin.errors">
+            <span *ngIf="cin.errors?.['required']">Le CIN est requis.</span>
+            <span *ngIf="cin.errors?.['pattern']">Chiffres uniquement.</span>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="field-group" [class.has-error]="motDePasse.invalid && motDePasse.touched">
+          <label class="field-label">Mot de passe</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">lock_outline</mat-icon>
+            <input
+              class="field-input"
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="••••••••"
+              [formControl]="motDePasse"
+              autocomplete="current-password"
+            />
+            <button type="button" class="toggle-pw" (click)="showPassword = !showPassword">
+              <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </div>
+          <div class="field-error" *ngIf="motDePasse.touched && motDePasse.errors">
+            <span *ngIf="motDePasse.errors?.['required']">Requis.</span>
+            <span *ngIf="motDePasse.errors?.['minlength']">Minimum 6 caractères.</span>
+          </div>
+        </div>
+
+        <!-- Forgot -->
+        <div class="forgot-row">
+          <a routerLink="/reset-password" class="forgot-link">Mot de passe oublié ?</a>
+        </div>
+
+        <!-- Submit -->
+        <button class="btn-submit" type="submit" [disabled]="loading">
+          <app-loading-spinner *ngIf="loading" />
+          <ng-container *ngIf="!loading">
+            <span>Se connecter</span>
+            <mat-icon>arrow_forward</mat-icon>
+          </ng-container>
         </button>
-      </div>
-      <div class="field-error" *ngIf="motDePasse.touched && motDePasse.errors">
-        <span *ngIf="motDePasse.errors?.['required']">Le mot de passe est requis.</span>
-        <span *ngIf="motDePasse.errors?.['minlength']">Minimum 6 caractères.</span>
-      </div>
+
+      </form>
+
     </div>
-
-    <!-- Forgot password -->
-    <div class="forgot-wrap">
-      <a routerLink="/reset-password" class="forgot-link">Mot de passe oublié ?</a>
-    </div>
-
-    <!-- Submit -->
-    <button class="btn-submit" type="submit" [disabled]="loading">
-      <app-loading-spinner *ngIf="loading" />
-      <span *ngIf="!loading">SE CONNECTER</span>
-    </button>
-
-  </form>
-
-  <!-- Footer ornament -->
-  <div class="login-footer">
-    <div class="orn-line"></div>
   </div>
 
 </div>

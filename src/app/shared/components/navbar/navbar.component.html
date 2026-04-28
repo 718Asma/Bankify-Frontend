@@ -1,13 +1,12 @@
 <nav class="navbar">
+
   <!-- Left: Brand -->
   <div class="navbar-brand">
-    <div class="brand-icon">
-      <span class="brand-icon-inner">B</span>
-    </div>
+    <div class="brand-icon"><span>B</span></div>
     <span class="brand-name">BANKIFY</span>
   </div>
 
-  <!-- Center: Decorative rule -->
+  <!-- Center: decorative -->
   <div class="navbar-center">
     <div class="divider-line"></div>
     <span class="divider-diamond">◆</span>
@@ -16,7 +15,8 @@
 
   <!-- Right: Actions -->
   <div class="navbar-actions">
-    <!-- Notification bell (decorative) -->
+
+    <!-- Notification bell -->
     <button mat-icon-button class="icon-btn" matTooltip="Notifications">
       <mat-icon class="nav-icon">notifications_none</mat-icon>
       <span class="notif-dot"></span>
@@ -32,12 +32,12 @@
       <mat-icon class="chevron-icon">expand_more</mat-icon>
     </button>
 
-    <mat-menu #userMenu="matMenu" class="luxury-menu" xPosition="before">
+    <mat-menu #userMenu="matMenu" class="navbar-menu" xPosition="before">
       <button mat-menu-item (click)="goToProfile()">
         <mat-icon>person_outline</mat-icon>
         <span>Mon profil</span>
       </button>
-      <button mat-menu-item routerLink="/profile/change-password">
+      <button mat-menu-item routerLink="/app/profile/change-password">
         <mat-icon>lock_outline</mat-icon>
         <span>Changer mot de passe</span>
       </button>
@@ -47,5 +47,6 @@
         <span>Déconnexion</span>
       </button>
     </mat-menu>
+
   </div>
 </nav>
