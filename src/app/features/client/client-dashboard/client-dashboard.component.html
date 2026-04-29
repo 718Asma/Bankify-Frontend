@@ -1,1 +1,230 @@
-<p>client-dashboard works!</p>
+<div class="dashboard-wrap" *ngIf="!loading">
+
+  <!-- Welcome header -->
+  <div class="dash-header">
+    <div class="welcome-block">
+      <div class="welcome-label">Tableau de bord</div>
+      <h1 class="welcome-name">Bonjour, {{ userName }} <span class="wave">👋</span></h1>
+    </div>
+    <div class="header-actions">
+      <button class="btn-action" routerLink="/app/transfer">
+        <mat-icon>swap_horiz</mat-icon>
+        <span>Virement</span>
+      </button>
+      <button class="btn-action primary" routerLink="/app/deposit">
+        <mat-icon>add_circle_outline</mat-icon>
+        <span>Dépôt</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Summary metric cards -->
+  <div class="metrics-row">
+
+    <div class="metric-card accent-navy">
+      <div class="metric-icon-wrap navy-icon">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Solde total</div>
+        <div class="metric-value">{{ formatAmount(totalBalance) }}</div>
+      </div>
+      <div class="metric-bg-icon">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+    </div>
+
+    <div class="metric-card accent-gold">
+      <div class="metric-icon-wrap gold-icon">
+        <mat-icon>credit_card</mat-icon>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Nombre de comptes</div>
+        <div class="metric-value num">{{ accountCount }}</div>
+      </div>
+      <div class="metric-bg-icon">
+        <mat-icon>credit_card</mat-icon>
+      </div>
+    </div>
+
+    <div class="metric-card accent-teal">
+      <div class="metric-icon-wrap teal-icon">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Dernière opération</div>
+        <div class="metric-value date" *ngIf="lastTxDate">{{ lastTxDate | date:'dd/MM/yyyy' }}</div>
+        <div class="metric-value date muted" *ngIf="!lastTxDate">Aucune</div>
+      </div>
+      <div class="metric-bg-icon">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+    </div>
+
+    <div class="metric-card accent-green">
+      <div class="metric-icon-wrap green-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Opérations récentes</div>
+        <div class="metric-value num">{{ recentTransactions.length }}</div>
+      </div>
+      <div class="metric-bg-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main content grid -->
+  <div class="dash-grid">
+
+    <!-- LEFT: Chart + Accounts -->
+    <div class="dash-col-left">
+
+      <!-- Spending chart -->
+      <div class="widget-card">
+        <div class="widget-header">
+          <div class="widget-title-wrap">
+            <div class="widget-dot"></div>
+            <span class="widget-title">Répartition des opérations</span>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="spendingChart"></canvas>
+          <div class="chart-center-label" *ngIf="recentTransactions.length === 0">
+            <mat-icon>pie_chart</mat-icon>
+            <span>Aucune donnée</span>
+          </div>
+        </div>
+        <!-- Stat pills -->
+        <div class="stat-pills">
+          <div class="stat-pill navy-pill">
+            <span class="pill-val">{{ txCounts.VIREMENT }}</span>
+            <span class="pill-lbl">Virements</span>
+          </div>
+          <div class="stat-pill gold-pill">
+            <span class="pill-val">{{ txCounts.DEPOT }}</span>
+            <span class="pill-lbl">Dépôts</span>
+          </div>
+          <div class="stat-pill red-pill">
+            <span class="pill-val">{{ txCounts.RETRAIT }}</span>
+            <span class="pill-lbl">Retraits</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="widget-card quick-actions-card">
+        <div class="widget-header">
+          <div class="widget-title-wrap">
+            <div class="widget-dot"></div>
+            <span class="widget-title">Actions rapides</span>
+          </div>
+        </div>
+        <div class="quick-grid">
+          <a class="quick-item" routerLink="/app/transfer">
+            <div class="quick-icon navy-bg"><mat-icon>swap_horiz</mat-icon></div>
+            <span>Virement</span>
+          </a>
+          <a class="quick-item" routerLink="/app/deposit">
+            <div class="quick-icon gold-bg"><mat-icon>add_circle_outline</mat-icon></div>
+            <span>Dépôt</span>
+          </a>
+          <a class="quick-item" routerLink="/app/withdraw">
+            <div class="quick-icon red-bg"><mat-icon>remove_circle_outline</mat-icon></div>
+            <span>Retrait</span>
+          </a>
+          <a class="quick-item" routerLink="/app/statement">
+            <div class="quick-icon teal-bg"><mat-icon>download</mat-icon></div>
+            <span>Relevé</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Recent transactions + Accounts -->
+    <div class="dash-col-right">
+
+      <!-- Recent transactions -->
+      <div class="widget-card">
+        <div class="widget-header">
+          <div class="widget-title-wrap">
+            <div class="widget-dot"></div>
+            <span class="widget-title">Dernières transactions</span>
+          </div>
+          <a class="widget-link" routerLink="/app/accounts">Voir tout</a>
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-widget" *ngIf="recentTransactions.length === 0">
+          <mat-icon>receipt_long</mat-icon>
+          <p>Aucune transaction récente.</p>
+        </div>
+
+        <!-- Transaction list -->
+        <div class="tx-list" *ngIf="recentTransactions.length > 0">
+          <div class="tx-item" *ngFor="let tx of recentTransactions">
+            <div class="tx-icon-wrap" [ngClass]="getTxClass(tx.type)">
+              <mat-icon>{{ getTxIcon(tx.type) }}</mat-icon>
+            </div>
+            <div class="tx-info">
+              <div class="tx-type">{{ tx.type }}</div>
+              <div class="tx-date">{{ tx.date | date:'dd/MM/yyyy HH:mm' }}</div>
+            </div>
+            <div class="tx-amount" [ngClass]="getTxClass(tx.type)">
+              {{ tx.type === 'DEPOT' ? '+' : '-' }}{{ formatAmount(tx.montant) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account balances -->
+      <div class="widget-card">
+        <div class="widget-header">
+          <div class="widget-title-wrap">
+            <div class="widget-dot"></div>
+            <span class="widget-title">Mes comptes</span>
+          </div>
+          <a class="widget-link" routerLink="/app/accounts">Gérer</a>
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-widget" *ngIf="accounts.length === 0">
+          <mat-icon>account_balance</mat-icon>
+          <p>Aucun compte disponible.</p>
+        </div>
+
+        <!-- Account rows -->
+        <div class="account-list" *ngIf="accounts.length > 0">
+          <div
+            class="account-row"
+            *ngFor="let acc of accounts"
+            (click)="goToAccount(acc.rib)"
+          >
+            <div class="acc-icon-wrap" [class.epargne]="acc.type === 'EPARGNE'">
+              <mat-icon>{{ acc.type === 'EPARGNE' ? 'savings' : 'account_balance' }}</mat-icon>
+            </div>
+            <div class="acc-info">
+              <div class="acc-type">{{ acc.type === 'EPARGNE' ? 'Épargne' : 'Courant' }}</div>
+              <div class="acc-rib">{{ acc.rib }}</div>
+            </div>
+            <div class="acc-right">
+              <div class="acc-balance">{{ formatAmount(acc.solde) }}</div>
+              <div class="acc-status" [ngClass]="getStatusClass(acc.statut)">{{ acc.statut }}</div>
+            </div>
+            <mat-icon class="acc-arrow">chevron_right</mat-icon>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Loading state -->
+<div class="loading-screen" *ngIf="loading">
+  <app-loading-spinner message="Chargement du tableau de bord..." />
+</div>

@@ -21,7 +21,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
       },
-      // TODO sprint2: reset-password/confirm (ResetPasswordConfirmComponent)
     ],
   },
 
@@ -33,7 +32,7 @@ export const routes: Routes = [
       import('./shared/layouts/app-layout/app-layout.component').then(m => m.AppLayoutComponent),
     children: [
 
-      // Profile
+      // ── Profile ────────────────────────────────────────────────────────
       {
         path: 'profile',
         loadComponent: () =>
@@ -45,7 +44,7 @@ export const routes: Routes = [
           import('./features/auth/change-password/change-password.component').then(m => m.ChangePasswordComponent),
       },
 
-      // Client dashboard
+      // ── Client dashboard ───────────────────────────────────────────────
       {
         path: 'dashboard/client',
         canActivate: [roleGuard],
@@ -54,7 +53,51 @@ export const routes: Routes = [
           import('./features/client/client-dashboard/client-dashboard.component').then(m => m.ClientDashboardComponent),
       },
 
-      // Agent dashboard
+      // ── Client features ────────────────────────────────────────────────
+      {
+        path: 'accounts',
+        canActivate: [roleGuard],
+        data: { roles: ['CLIENT'] },
+        loadComponent: () =>
+          import('./features/client/account-list/account-list.component').then(m => m.AccountListComponent),
+      },
+      {
+        path: 'accounts/:rib',
+        canActivate: [roleGuard],
+        data: { roles: ['CLIENT'] },
+        loadComponent: () =>
+          import('./features/client/account-detail/account-detail.component').then(m => m.AccountDetailComponent),
+      },
+      {
+        path: 'transfer',
+        canActivate: [roleGuard],
+        data: { roles: ['CLIENT'] },
+        loadComponent: () =>
+          import('./features/client/transfer/transfer.component').then(m => m.TransferComponent),
+      },
+      {
+        path: 'deposit',
+        canActivate: [roleGuard],
+        data: { roles: ['CLIENT'] },
+        loadComponent: () =>
+          import('./features/client/deposit/deposit.component').then(m => m.DepositComponent),
+      },
+      {
+        path: 'withdraw',
+        canActivate: [roleGuard],
+        data: { roles: ['CLIENT'] },
+        loadComponent: () =>
+          import('./features/client/withdraw/withdraw.component').then(m => m.WithdrawComponent),
+      },
+      {
+        path: 'statement',
+        canActivate: [roleGuard],
+        data: { roles: ['CLIENT'] },
+        loadComponent: () =>
+          import('./features/client/statement/statement.component').then(m => m.StatementComponent),
+      },
+
+      // ── Agent dashboard ────────────────────────────────────────────────
       {
         path: 'dashboard/agent',
         canActivate: [roleGuard],
@@ -63,50 +106,49 @@ export const routes: Routes = [
           import('./features/agent/agent-dashboard/agent-dashboard.component').then(m => m.AgentDashboardComponent),
       },
 
-      // TODO sprint2: uncomment as components are created
+      // ── Agent features ─────────────────────────────────────────────────
       {
-        path: 'accounts',
+        path: 'agent/clients',
         canActivate: [roleGuard],
-        data: { roles: ['CLIENT'] },
+        data: { roles: ['AGENT'] },
         loadComponent: () =>
-        import('./features/client/account-list/account-list.component').then(m => m.AccountListComponent),
+          import('./features/agent/client-list/client-list.component').then(m => m.ClientListComponent),
       },
       {
-        path: 'accounts/:rib',
+        path: 'agent/clients/new',
         canActivate: [roleGuard],
-        data: { roles: ['CLIENT'] },
+        data: { roles: ['AGENT'] },
         loadComponent: () =>
-        import('./features/client/account-detail/account-detail.component').then(m => m.AccountDetailComponent),
+          import('./features/agent/create-client/create-client.component').then(m => m.CreateClientComponent),
       },
       {
-      path: 'transfer',
-      canActivate: [roleGuard],
-      data: { roles: ['CLIENT'] },
-      loadComponent: () =>
-        import('./features/client/transfer/transfer.component').then(m => m.TransferComponent),
-    },
-    {
-      path: 'deposit',
-      canActivate: [roleGuard],
-      data: { roles: ['CLIENT'] },
-      loadComponent: () =>
-        import('./features/client/deposit/deposit.component').then(m => m.DepositComponent),
-    },
-    {
-      path: 'withdraw',
-      canActivate: [roleGuard],
-      data: { roles: ['CLIENT'] },
-      loadComponent: () =>
-        import('./features/client/withdraw/withdraw.component').then(m => m.WithdrawComponent),
-    },
-
-     {
-      path: 'statement',
-      canActivate: [roleGuard],
-      data: { roles: ['CLIENT'] },
-      loadComponent: () =>
-      import('./features/client/statement/statement.component').then(m => m.StatementComponent),
-    },
+        path: 'agent/clients/:cin',
+        canActivate: [roleGuard],
+        data: { roles: ['AGENT'] },
+        loadComponent: () =>
+          import('./features/agent/client-detail/client-detail.component').then(m => m.ClientDetailComponent),
+      },
+      {
+        path: 'agent/accounts/new',
+        canActivate: [roleGuard],
+        data: { roles: ['AGENT'] },
+        loadComponent: () =>
+          import('./features/agent/open-account/open-account.component').then(m => m.OpenAccountComponent),
+      },
+      {
+        path: 'agent/accounts/:rib',
+        canActivate: [roleGuard],
+        data: { roles: ['AGENT'] },
+        loadComponent: () =>
+          import('./features/agent/account-management/account-management.component').then(m => m.AccountManagementComponent),
+      },
+      {
+        path: 'agent/audit',
+        canActivate: [roleGuard],
+        data: { roles: ['AGENT'] },
+        loadComponent: () =>
+          import('./features/agent/audit-log/audit-log.component').then(m => m.AuditLogComponent),
+      },
     ],
   },
 

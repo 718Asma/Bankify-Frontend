@@ -1,0 +1,167 @@
+<div class="page-shell">
+
+  <!-- LEFT panel -->
+  <div class="left-panel">
+    <div class="brand">
+      <div class="brand-icon"><span>B</span></div>
+      <span class="brand-name">BANKIFY</span>
+    </div>
+
+    <div class="left-content">
+      <div class="op-illustration">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="op-svg">
+          <circle cx="100" cy="100" r="80" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
+          <!-- Person silhouette -->
+          <circle cx="100" cy="72" r="20" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1.2"/>
+          <path d="M60 140 C60 115 140 115 140 140" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1.2"/>
+          <!-- Plus badge -->
+          <circle cx="138" cy="60" r="16" fill="#0f2535" stroke="#C9A84C" stroke-width="1.2"/>
+          <path d="M138 53 L138 67 M131 60 L145 60" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+          <!-- Sparkles -->
+          <circle cx="45" cy="55" r="2" fill="#C9A84C" opacity="0.5"/>
+          <circle cx="158" cy="148" r="1.5" fill="#C9A84C" opacity="0.4"/>
+          <circle cx="42" cy="150" r="1.5" fill="#C9A84C" opacity="0.3"/>
+        </svg>
+      </div>
+
+      <div class="left-text">
+        <h2 class="left-title">Nouveau client</h2>
+        <p class="left-sub">Enregistrez un nouveau client dans le système bancaire.</p>
+      </div>
+
+      <div class="tips">
+        <div class="tip-item"><div class="tip-dot"></div><span>CIN unique et obligatoire</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Email valide requis</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Mot de passe généré automatiquement</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT panel -->
+  <div class="right-panel">
+    <div class="form-wrap">
+
+      <div class="form-header">
+        <button class="btn-back" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Retour</span>
+        </button>
+        <h1 class="form-title">Créer un client</h1>
+        <p class="form-subtitle">Remplissez les informations du nouveau client.</p>
+      </div>
+
+      <form class="form" (ngSubmit)="submit()" novalidate>
+
+        <!-- Row: CIN -->
+        <div class="field-group" [class.has-error]="cin.invalid && cin.touched">
+          <label class="field-label">Numéro CIN</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">badge</mat-icon>
+            <input class="field-input" type="text" inputmode="numeric"
+              placeholder="Ex: 12345678" [formControl]="cin"
+              (blur)="checkCinUniqueness()" />
+            <span class="field-status" *ngIf="cinChecking">
+              <mat-icon class="spin-icon">sync</mat-icon>
+            </span>
+            <span class="field-status ok" *ngIf="cinAvailable === true && !cinChecking">
+              <mat-icon>check_circle</mat-icon>
+            </span>
+            <span class="field-status err" *ngIf="cinAvailable === false && !cinChecking">
+              <mat-icon>cancel</mat-icon>
+            </span>
+          </div>
+          <div class="field-error" *ngIf="cin.touched && cin.errors">
+            <span *ngIf="cin.errors?.['required']">Requis.</span>
+            <span *ngIf="cin.errors?.['pattern']">Chiffres uniquement.</span>
+          </div>
+          <div class="field-error" *ngIf="cinAvailable === false && !cinChecking">
+            Ce CIN est déjà enregistré.
+          </div>
+        </div>
+
+        <!-- Row: prenom + nom -->
+        <div class="field-row">
+          <div class="field-group" [class.has-error]="prenom.invalid && prenom.touched">
+            <label class="field-label">Prénom</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">person_outline</mat-icon>
+              <input class="field-input" type="text" placeholder="Prénom" [formControl]="prenom" />
+            </div>
+            <div class="field-error" *ngIf="prenom.touched && prenom.errors?.['required']">Requis.</div>
+          </div>
+
+          <div class="field-group" [class.has-error]="nom.invalid && nom.touched">
+            <label class="field-label">Nom</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">person_outline</mat-icon>
+              <input class="field-input" type="text" placeholder="Nom" [formControl]="nom" />
+            </div>
+            <div class="field-error" *ngIf="nom.touched && nom.errors?.['required']">Requis.</div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field-group" [class.has-error]="email.invalid && email.touched">
+          <label class="field-label">Email</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">mail_outline</mat-icon>
+            <input class="field-input" type="email" placeholder="email@exemple.com" [formControl]="email" />
+          </div>
+          <div class="field-error" *ngIf="email.touched && email.errors">
+            <span *ngIf="email.errors?.['required']">Requis.</span>
+            <span *ngIf="email.errors?.['email']">Format invalide.</span>
+          </div>
+        </div>
+
+        <!-- Row: telephone + dateNaissance -->
+        <div class="field-row">
+          <div class="field-group" [class.has-error]="telephone.invalid && telephone.touched">
+            <label class="field-label">Téléphone</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">phone</mat-icon>
+              <input class="field-input" type="tel" placeholder="12345678" [formControl]="telephone" />
+            </div>
+            <div class="field-error" *ngIf="telephone.touched && telephone.errors">
+              <span *ngIf="telephone.errors?.['required']">Requis.</span>
+              <span *ngIf="telephone.errors?.['pattern']">8 à 15 chiffres.</span>
+            </div>
+          </div>
+
+          <div class="field-group" [class.has-error]="dateNaiss.invalid && dateNaiss.touched">
+            <label class="field-label">Date de naissance</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">cake</mat-icon>
+              <input class="field-input" type="date" [formControl]="dateNaiss" />
+            </div>
+            <div class="field-error" *ngIf="dateNaiss.touched && dateNaiss.errors?.['required']">Requis.</div>
+          </div>
+        </div>
+
+        <!-- Adresse -->
+        <div class="field-group" [class.has-error]="adresse.invalid && adresse.touched">
+          <label class="field-label">Adresse</label>
+          <div class="field-input-wrap textarea-wrap">
+            <mat-icon class="field-icon" style="align-self:flex-start;margin-top:13px">home_outline</mat-icon>
+            <textarea class="field-input field-textarea" placeholder="Adresse complète"
+              [formControl]="adresse" rows="2"></textarea>
+          </div>
+          <div class="field-error" *ngIf="adresse.touched && adresse.errors?.['required']">Requis.</div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="goBack()">Annuler</button>
+          <button type="submit" class="btn-submit" [disabled]="loading || cinAvailable === false">
+            <app-loading-spinner *ngIf="loading" />
+            <ng-container *ngIf="!loading">
+              <span>Créer le client</span>
+              <mat-icon>person_add_alt</mat-icon>
+            </ng-container>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,102 @@
+<div class="page-wrap">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Gestion Clients</h1>
+      <p class="page-subtitle">Recherchez un client par CIN ou créez-en un nouveau.</p>
+    </div>
+    <button class="btn-new" routerLink="/app/agent/clients/new">
+      <mat-icon>person_add_alt</mat-icon>
+      <span>Nouveau client</span>
+    </button>
+  </div>
+
+  <!-- Search bar -->
+  <div class="search-card">
+    <div class="search-wrap">
+      <div class="search-input-wrap" [class.has-error]="searched && !loading && result === null">
+        <mat-icon class="search-icon">badge</mat-icon>
+        <input
+          class="search-input"
+          type="text"
+          inputmode="numeric"
+          placeholder="Entrez le numéro CIN du client..."
+          [(ngModel)]="cinQuery"
+          (keydown.enter)="search()"
+        />
+        <button class="btn-search" (click)="search()" [disabled]="loading || !cinQuery">
+          <app-loading-spinner *ngIf="loading" />
+          <mat-icon *ngIf="!loading">search</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <ng-container *ngIf="searched && !loading">
+
+    <!-- Not found -->
+    <div class="empty-state" *ngIf="result === null">
+      <mat-icon class="empty-icon">person_search</mat-icon>
+      <p class="empty-title">Aucun client trouvé</p>
+      <p class="empty-sub">Aucun client avec le CIN <strong>{{ cinQuery }}</strong> n'existe.</p>
+      <button class="btn-new-inline" routerLink="/app/agent/clients/new">
+        <mat-icon>person_add_alt</mat-icon>
+        <span>Créer ce client</span>
+      </button>
+    </div>
+
+    <!-- Client card -->
+    <div class="client-card" *ngIf="result !== null">
+      <div class="card-accent"></div>
+      <div class="card-body">
+
+        <!-- Avatar + info -->
+        <div class="card-left">
+          <div class="client-avatar">{{ initials(result) }}</div>
+          <div class="client-info">
+            <div class="client-name">{{ result.prenom }} {{ result.nom }}</div>
+            <div class="client-cin">CIN : {{ result.cin }}</div>
+            <div class="client-role-badge">{{ result.role === 'ROLE_CLIENT' ? 'CLIENT' : 'AGENT' }}</div>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="card-details">
+          <div class="detail-item">
+            <mat-icon class="detail-icon">mail_outline</mat-icon>
+            <span>{{ result.email }}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">phone</mat-icon>
+            <span>{{ result.telephone }}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">cake</mat-icon>
+            <span>{{ result.dateNaiss | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">home_outline</mat-icon>
+            <span>{{ result.adresse }}</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="card-actions">
+          <button class="btn-view" [routerLink]="['/app/agent/clients', result.cin]">
+            <mat-icon>visibility</mat-icon>
+            <span>Voir</span>
+          </button>
+          <button class="btn-edit" [routerLink]="['/app/agent/clients', result.cin]">
+            <mat-icon>edit</mat-icon>
+            <span>Modifier</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

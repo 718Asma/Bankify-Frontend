@@ -11,19 +11,29 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  private readonly base = `${environment.apiUrl}/api/transactions`;
+
+  private readonly base = `${environment.apiUrl}/api/comptes`;
 
   constructor(private http: HttpClient) {}
 
-  transfer(payload: TransferPayload): Observable<Transaction> {
-    return this.http.post<Transaction>(`${this.base}/virement`, payload);
+  transfer(rib: string, payload: TransferPayload): Observable<Transaction> {
+    return this.http.post<Transaction>(
+      `${this.base}/${rib}/virement`,
+      payload
+    );
   }
 
-  deposit(payload: DepositPayload): Observable<Transaction> {
-    return this.http.post<Transaction>(`${this.base}/depot`, payload);
+  deposit(rib: string, payload: DepositPayload): Observable<Transaction> {
+    return this.http.post<Transaction>(
+      `${this.base}/${rib}/depot`,
+      payload
+    );
   }
 
-  withdraw(payload: WithdrawPayload): Observable<Transaction> {
-    return this.http.post<Transaction>(`${this.base}/retrait`, payload);
+  withdraw(rib: string, payload: WithdrawPayload): Observable<Transaction> {
+    return this.http.post<Transaction>(
+      `${this.base}/${rib}/retrait`,
+      payload
+    );
   }
 }

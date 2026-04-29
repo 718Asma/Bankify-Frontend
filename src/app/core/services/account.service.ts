@@ -17,12 +17,12 @@ export class AccountService {
 
   /** Get all accounts for logged-in client */
   getAccounts(): Observable<Compte[]> {
-    return this.http.get<Compte[]>(`${this.base}/comptes`);
+    return this.http.get<Compte[]>(`${this.base}/comptes/mes-comptes`);
   }
 
   /** Get single account by RIB */
   getAccountById(rib: string): Observable<Compte> {
-    return this.http.get<Compte>(`${this.base}/comptes/${rib}`);
+    return this.http.get<Compte>(`${this.base}/${rib}/details`);
   }
 
   /** Get transactions for an account with optional filters + pagination */
@@ -38,7 +38,7 @@ export class AccountService {
     if (filters.size != null) params = params.set('size', filters.size.toString());
 
     return this.http.get<PagedResponse<Transaction>>(
-      `${this.base}/comptes/${rib}/transactions`,
+      `${this.base}/transactions`,
       { params }
     );
   }

@@ -32,29 +32,34 @@ export class LoginComponent {
     private router: Router,
   ) {
     this.form = this.fb.group({
-      cin:        ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      motDePasse: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  get cin()        { return this.form.get('cin') as FormControl; }
-  get motDePasse() { return this.form.get('motDePasse') as FormControl; }
+  get email()        { return this.form.get('email') as FormControl; }
+  get password() { return this.form.get('password') as FormControl; }
 
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
 
+    const payload = {
+      ...this.form.value,
+      userType: 'AGENT'
+    };
+
     this.loading = true;
-    this.auth.login(this.form.value).subscribe({
+    this.auth.login(payload).subscribe({
       next: (res) => {
         this.loading = false;
-        const route = res.role === 'AGENT' ? '/app/dashboard/agent' : '/app/dashboard/client';
+        const route = '/app/dashboard/agent';
         this.router.navigate([route]);
       },
       error: (err) => {
         this.loading = false;
         const msg = err.status === 401
-          ? 'CIN ou mot de passe incorrect.'
-          : 'Une erreur est survenue. Veuillez réessayer.';
+          ? 'email ou mot de passe incorrect.'
+          : 'Une erreur est survenue. Veuillez rÃ©essayer.';
         this.notify.error(msg);
       },
     });

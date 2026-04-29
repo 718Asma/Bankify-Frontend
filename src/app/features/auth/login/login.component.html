@@ -88,30 +88,30 @@
       </div>
 
       <!-- Form -->
-      <form class="form" (ngSubmit)="submit()" novalidate>
+      <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
 
-        <!-- CIN -->
-        <div class="field-group" [class.has-error]="cin.invalid && cin.touched">
-          <label class="field-label">Numéro CIN</label>
+        <!-- email -->
+        <div class="field-group" [class.has-error]="email.invalid && email.touched">
+          <label class="field-label">Email</label>
           <div class="field-input-wrap">
             <mat-icon class="field-icon">badge</mat-icon>
             <input
               class="field-input"
               type="text"
               inputmode="numeric"
-              placeholder="Entrez votre CIN"
-              [formControl]="cin"
+              placeholder="Entrez votre email"
+              [formControl]="email"
               autocomplete="username"
             />
           </div>
-          <div class="field-error" *ngIf="cin.touched && cin.errors">
-            <span *ngIf="cin.errors?.['required']">Le CIN est requis.</span>
-            <span *ngIf="cin.errors?.['pattern']">Chiffres uniquement.</span>
+          <div class="field-error" *ngIf="email.touched && email.errors">
+            <span *ngIf="email.errors?.['required']">Le email est requis.</span>
+            <span *ngIf="email.errors?.['pattern']">Chiffres uniquement.</span>
           </div>
         </div>
 
         <!-- Password -->
-        <div class="field-group" [class.has-error]="motDePasse.invalid && motDePasse.touched">
+        <div class="field-group" [class.has-error]="password.invalid && password.touched">
           <label class="field-label">Mot de passe</label>
           <div class="field-input-wrap">
             <mat-icon class="field-icon">lock_outline</mat-icon>
@@ -119,16 +119,16 @@
               class="field-input"
               [type]="showPassword ? 'text' : 'password'"
               placeholder="••••••••"
-              [formControl]="motDePasse"
+              [formControl]="password"
               autocomplete="current-password"
             />
             <button type="button" class="toggle-pw" (click)="showPassword = !showPassword">
               <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
           </div>
-          <div class="field-error" *ngIf="motDePasse.touched && motDePasse.errors">
-            <span *ngIf="motDePasse.errors?.['required']">Requis.</span>
-            <span *ngIf="motDePasse.errors?.['minlength']">Minimum 6 caractères.</span>
+          <div class="field-error" *ngIf="password.touched && password.errors">
+            <span *ngIf="password.errors?.['required']">Requis.</span>
+            <span *ngIf="password.errors?.['minlength']">Minimum 6 caractères.</span>
           </div>
         </div>
 

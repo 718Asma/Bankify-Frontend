@@ -4,8 +4,9 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface LoginRequest {
-  cin: string;
-  motDePasse: string;
+  email: string;
+  password: string;
+  userType?: 'CLIENT' | 'AGENT';
 }
 
 export interface LoginResponse {
@@ -30,7 +31,7 @@ const USER_KEY  = 'bankify_user';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private readonly loginUrl = `${environment.apiUrl}/auth/login`;
+  private readonly loginUrl = `${environment.apiUrl}/api/auth/login`;
 
   constructor(private http: HttpClient) {}
 
