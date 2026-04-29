@@ -1,0 +1,70 @@
+<div class="page-wrap">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Mes Comptes</h1>
+      <p class="page-subtitle">Consultez et gérez vos comptes bancaires</p>
+    </div>
+    <div class="header-right">
+      <div class="accounts-count" *ngIf="!loading">
+        <mat-icon>account_balance</mat-icon>
+        <span>{{ accounts.length }} compte{{ accounts.length > 1 ? 's' : '' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-wrap" *ngIf="loading">
+    <app-loading-spinner message="Chargement des comptes..." />
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="!loading && accounts.length === 0">
+    <mat-icon class="empty-icon">account_balance_wallet</mat-icon>
+    <p class="empty-text">Aucun compte disponible.</p>
+  </div>
+
+  <!-- Accounts grid -->
+  <div class="accounts-grid" *ngIf="!loading && accounts.length > 0">
+    <div
+      class="account-card"
+      *ngFor="let account of accounts"
+      (click)="goToDetail(account.rib)"
+    >
+      <!-- Card top accent -->
+      <div class="card-accent" [class.accent-epargne]="account.type === 'EPARGNE'"></div>
+
+      <!-- Card header -->
+      <div class="card-header">
+        <div class="account-type-badge" [class.badge-epargne]="account.type === 'EPARGNE'">
+          <mat-icon>{{ account.type === 'EPARGNE' ? 'savings' : 'account_balance' }}</mat-icon>
+          <span>{{ account.type === 'EPARGNE' ? 'Épargne' : 'Courant' }}</span>
+        </div>
+        <div class="account-status" [ngClass]="getStatusClass(account.statut)">
+          <span class="status-dot"></span>
+          <span>{{ account.statut }}</span>
+        </div>
+      </div>
+
+      <!-- RIB -->
+      <div class="account-rib">
+        <span class="rib-label">RIB</span>
+        <span class="rib-value">{{ account.rib }}</span>
+      </div>
+
+      <!-- Balance -->
+      <div class="account-balance">
+        <span class="balance-label">Solde disponible</span>
+        <span class="balance-value">{{ formatSolde(account.solde) }}</span>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <span class="card-date">Depuis le {{ account.dateCreation | date:'dd/MM/yyyy' }}</span>
+        <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+      </div>
+    </div>
+  </div>
+
+</div>

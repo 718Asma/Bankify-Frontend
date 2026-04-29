@@ -1,0 +1,121 @@
+<div class="page-shell">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <div class="brand">
+      <div class="brand-icon"><span>B</span></div>
+      <span class="brand-name">BANKIFY</span>
+    </div>
+    <div class="left-content">
+      <div class="op-illustration">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="op-svg">
+          <!-- Document -->
+          <rect x="55" y="40" width="90" height="115" rx="4" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1"/>
+          <!-- Fold corner -->
+          <path d="M125 40 L145 60 L125 60 Z" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+          <!-- Lines -->
+          <rect x="68" y="70" width="64" height="4" rx="2" fill="#C9A84C" opacity="0.5"/>
+          <rect x="68" y="82" width="50" height="3" rx="1.5" fill="#C9A84C" opacity="0.3"/>
+          <rect x="68" y="92" width="56" height="3" rx="1.5" fill="#C9A84C" opacity="0.25"/>
+          <rect x="68" y="102" width="45" height="3" rx="1.5" fill="#C9A84C" opacity="0.3"/>
+          <rect x="68" y="112" width="60" height="3" rx="1.5" fill="#C9A84C" opacity="0.2"/>
+          <rect x="68" y="122" width="40" height="3" rx="1.5" fill="#C9A84C" opacity="0.25"/>
+          <!-- Bottom total line -->
+          <rect x="68" y="135" width="64" height="1" fill="#C9A84C" opacity="0.4"/>
+          <rect x="90" y="141" width="42" height="5" rx="2" fill="#C9A84C" opacity="0.4"/>
+          <!-- Download arrow -->
+          <path d="M100 168 L100 182" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+          <path d="M94 176 L100 183 L106 176" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Sparkles -->
+          <circle cx="38" cy="55" r="2" fill="#C9A84C" opacity="0.4"/>
+          <circle cx="165" cy="50" r="1.5" fill="#C9A84C" opacity="0.3"/>
+          <circle cx="162" cy="158" r="2" fill="#C9A84C" opacity="0.35"/>
+          <circle cx="35" cy="155" r="1.5" fill="#C9A84C" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="left-text">
+        <h2 class="left-title">Relevé de compte</h2>
+        <p class="left-sub">Téléchargez votre relevé de compte au format PDF pour la période souhaitée.</p>
+      </div>
+      <div class="tips">
+        <div class="tip-item"><div class="tip-dot"></div><span>Sélectionnez une période précise</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Format PDF officiel</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Téléchargement instantané</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+    <div class="form-wrap">
+
+      <div class="form-header">
+        <h1 class="form-title">Générer un relevé</h1>
+        <p class="form-subtitle">Choisissez le compte et la période pour votre relevé PDF.</p>
+      </div>
+
+      <div class="loading-wrap" *ngIf="loadingAccounts">
+        <app-loading-spinner message="Chargement des comptes..." />
+      </div>
+
+      <form class="form" (ngSubmit)="submit()" novalidate *ngIf="!loadingAccounts">
+
+        <!-- Account -->
+        <div class="field-group" [class.has-error]="rib.invalid && rib.touched">
+          <label class="field-label">Compte</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">account_balance</mat-icon>
+            <select class="field-input" [formControl]="rib">
+              <option value="" disabled selected>Sélectionnez un compte</option>
+              <option *ngFor="let acc of accounts" [value]="acc.rib">
+                {{ acc.rib }} — {{ acc.type }}
+              </option>
+            </select>
+          </div>
+          <div class="field-error" *ngIf="rib.touched && rib.errors?.['required']">Requis.</div>
+        </div>
+
+        <!-- Date range -->
+        <div class="field-row">
+          <div class="field-group" [class.has-error]="dateDebut.invalid && dateDebut.touched">
+            <label class="field-label">Date début</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">calendar_today</mat-icon>
+              <input class="field-input" type="date" [formControl]="dateDebut" />
+            </div>
+            <div class="field-error" *ngIf="dateDebut.touched && dateDebut.errors?.['required']">Requis.</div>
+          </div>
+
+          <div class="field-group" [class.has-error]="dateFin.invalid && dateFin.touched">
+            <label class="field-label">Date fin</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">event</mat-icon>
+              <input class="field-input" type="date" [formControl]="dateFin" />
+            </div>
+            <div class="field-error" *ngIf="dateFin.touched && dateFin.errors?.['required']">Requis.</div>
+          </div>
+        </div>
+
+        <!-- Info box -->
+        <div class="info-box">
+          <mat-icon class="info-icon">info_outline</mat-icon>
+          <p>Le relevé sera généré au format PDF et téléchargé automatiquement.</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" routerLink="/app/accounts">Annuler</button>
+          <button type="submit" class="btn-submit" [disabled]="loadingDownload">
+            <app-loading-spinner *ngIf="loadingDownload" />
+            <ng-container *ngIf="!loadingDownload">
+              <mat-icon>download</mat-icon>
+              <span>Télécharger le relevé</span>
+            </ng-container>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

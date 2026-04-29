@@ -1,0 +1,126 @@
+<div class="page-shell">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <div class="brand">
+      <div class="brand-icon"><span>B</span></div>
+      <span class="brand-name">BANKIFY</span>
+    </div>
+    <div class="left-content">
+      <div class="op-illustration">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="op-svg">
+          <!-- Left account -->
+          <rect x="20" y="75" width="60" height="50" rx="6" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1"/>
+          <rect x="30" y="88" width="40" height="6" rx="2" fill="#C9A84C" opacity="0.5"/>
+          <rect x="30" y="100" width="25" height="4" rx="2" fill="#C9A84C" opacity="0.3"/>
+          <!-- Right account -->
+          <rect x="120" y="75" width="60" height="50" rx="6" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1"/>
+          <rect x="130" y="88" width="40" height="6" rx="2" fill="#C9A84C" opacity="0.5"/>
+          <rect x="130" y="100" width="25" height="4" rx="2" fill="#C9A84C" opacity="0.3"/>
+          <!-- Arrow -->
+          <path d="M88 100 L112 100" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+          <path d="M106 94 L112 100 L106 106" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Amount bubble -->
+          <rect x="78" y="62" width="44" height="22" rx="11" fill="#C9A84C" opacity="0.15" stroke="#C9A84C" stroke-width="0.5"/>
+          <text x="100" y="77" text-anchor="middle" font-size="9" fill="#C9A84C" font-family="Roboto">TND</text>
+          <!-- Sparkles -->
+          <circle cx="50" cy="50" r="2" fill="#C9A84C" opacity="0.4"/>
+          <circle cx="150" cy="45" r="1.5" fill="#C9A84C" opacity="0.3"/>
+          <circle cx="160" cy="155" r="2" fill="#C9A84C" opacity="0.4"/>
+          <circle cx="40" cy="160" r="1.5" fill="#C9A84C" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="left-text">
+        <h2 class="left-title">Virement bancaire</h2>
+        <p class="left-sub">Transférez des fonds en toute sécurité vers n'importe quel compte.</p>
+      </div>
+      <div class="tips">
+        <div class="tip-item"><div class="tip-dot"></div><span>Vérifiez le RIB destinataire</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Montant minimum : 1 TND</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Opération immédiate et sécurisée</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+    <div class="form-wrap">
+      <div class="form-header">
+        <h1 class="form-title">Nouveau virement</h1>
+        <p class="form-subtitle">Remplissez les informations du virement.</p>
+      </div>
+
+      <div class="loading-wrap" *ngIf="loadingAccounts">
+        <app-loading-spinner message="Chargement des comptes..." />
+      </div>
+
+      <form class="form" (ngSubmit)="submit()" novalidate *ngIf="!loadingAccounts">
+
+        <!-- Source account -->
+        <div class="field-group" [class.has-error]="ribSource.invalid && ribSource.touched">
+          <label class="field-label">Compte source</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">account_balance</mat-icon>
+            <select class="field-input" [formControl]="ribSource">
+              <option value="" disabled selected>Sélectionnez un compte</option>
+              <option *ngFor="let acc of accounts" [value]="acc.rib">
+                {{ acc.rib }} — {{ acc.type }} ({{ acc.solde | number:'1.2-2' }} TND)
+              </option>
+            </select>
+          </div>
+          <div class="field-error" *ngIf="ribSource.touched && ribSource.errors?.['required']">Requis.</div>
+        </div>
+
+        <!-- Destination RIB -->
+        <div class="field-group" [class.has-error]="ribDestination.invalid && ribDestination.touched">
+          <label class="field-label">RIB destinataire</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">swap_horiz</mat-icon>
+            <input class="field-input" type="text" placeholder="RIB du compte bénéficiaire"
+              [formControl]="ribDestination" />
+          </div>
+          <div class="field-error" *ngIf="ribDestination.touched && ribDestination.errors">
+            <span *ngIf="ribDestination.errors?.['required']">Requis.</span>
+            <span *ngIf="ribDestination.errors?.['minlength']">RIB invalide (min 20 caractères).</span>
+          </div>
+        </div>
+
+        <!-- Amount -->
+        <div class="field-group" [class.has-error]="montant.invalid && montant.touched">
+          <label class="field-label">Montant (TND)</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">payments</mat-icon>
+            <input class="field-input" type="number" placeholder="0.00" min="1" [formControl]="montant" />
+          </div>
+          <div class="field-error" *ngIf="montant.touched && montant.errors">
+            <span *ngIf="montant.errors?.['required']">Requis.</span>
+            <span *ngIf="montant.errors?.['min']">Minimum 1 TND.</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="field-group">
+          <label class="field-label">Description (optionnel)</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">notes</mat-icon>
+            <input class="field-input" type="text" placeholder="Ex: Loyer, remboursement..."
+              formControlName="description" />
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" routerLink="/app/accounts">Annuler</button>
+          <button type="submit" class="btn-submit" [disabled]="loading">
+            <app-loading-spinner *ngIf="loading" />
+            <ng-container *ngIf="!loading">
+              <span>Effectuer le virement</span>
+              <mat-icon>arrow_forward</mat-icon>
+            </ng-container>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

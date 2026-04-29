@@ -1,0 +1,92 @@
+<div class="page-shell">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <div class="brand">
+      <div class="brand-icon"><span>B</span></div>
+      <span class="brand-name">BANKIFY</span>
+    </div>
+    <div class="left-content">
+      <div class="op-illustration">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="op-svg">
+          <rect x="60" y="70" width="80" height="55" rx="6" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1"/>
+          <rect x="72" y="83" width="56" height="6" rx="2" fill="#C9A84C" opacity="0.4"/>
+          <rect x="72" y="95" width="35" height="4" rx="2" fill="#C9A84C" opacity="0.25"/>
+          <!-- Up arrow going out -->
+          <path d="M100 133 L100 158" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+          <path d="M93 140 L100 133 L107 140" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Coin at bottom -->
+          <circle cx="100" cy="170" r="14" fill="#C9A84C" opacity="0.15" stroke="#C9A84C" stroke-width="1"/>
+          <text x="100" y="175" text-anchor="middle" font-size="12" fill="#C9A84C">−</text>
+          <circle cx="45" cy="55" r="2" fill="#C9A84C" opacity="0.4"/>
+          <circle cx="158" cy="50" r="1.5" fill="#C9A84C" opacity="0.3"/>
+          <circle cx="42" cy="160" r="2" fill="#C9A84C" opacity="0.35"/>
+        </svg>
+      </div>
+      <div class="left-text">
+        <h2 class="left-title">Retrait de fonds</h2>
+        <p class="left-sub">Retirez des fonds de votre compte en toute sécurité.</p>
+      </div>
+      <div class="tips">
+        <div class="tip-item"><div class="tip-dot"></div><span>Vérifiez votre solde disponible</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Montant minimum : 1 TND</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Confirmation requise avant retrait</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+    <div class="form-wrap">
+      <div class="form-header">
+        <h1 class="form-title">Nouveau retrait</h1>
+        <p class="form-subtitle">Sélectionnez le compte et le montant à retirer.</p>
+      </div>
+
+      <div class="loading-wrap" *ngIf="loadingAccounts">
+        <app-loading-spinner message="Chargement des comptes..." />
+      </div>
+
+      <form class="form" (ngSubmit)="submit()" novalidate *ngIf="!loadingAccounts">
+
+        <div class="field-group" [class.has-error]="rib.invalid && rib.touched">
+          <label class="field-label">Compte source</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">account_balance</mat-icon>
+            <select class="field-input" [formControl]="rib">
+              <option value="" disabled selected>Sélectionnez un compte</option>
+              <option *ngFor="let acc of accounts" [value]="acc.rib">
+                {{ acc.rib }} — {{ acc.type }} ({{ acc.solde | number:'1.2-2' }} TND)
+              </option>
+            </select>
+          </div>
+          <div class="field-error" *ngIf="rib.touched && rib.errors?.['required']">Requis.</div>
+        </div>
+
+        <div class="field-group" [class.has-error]="montant.invalid && montant.touched">
+          <label class="field-label">Montant (TND)</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">remove_circle_outline</mat-icon>
+            <input class="field-input" type="number" placeholder="0.00" min="1" [formControl]="montant" />
+          </div>
+          <div class="field-error" *ngIf="montant.touched && montant.errors">
+            <span *ngIf="montant.errors?.['required']">Requis.</span>
+            <span *ngIf="montant.errors?.['min']">Minimum 1 TND.</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" routerLink="/app/accounts">Annuler</button>
+          <button type="submit" class="btn-submit warn" [disabled]="loading">
+            <app-loading-spinner *ngIf="loading" />
+            <ng-container *ngIf="!loading">
+              <span>Effectuer le retrait</span>
+              <mat-icon>arrow_forward</mat-icon>
+            </ng-container>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

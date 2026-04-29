@@ -1,0 +1,199 @@
+:host {
+  --navy:       #0f2535;
+  --navy-mid:   #1a3a4a;
+  --navy-light: #1e4560;
+  --gold:       #C9A84C;
+  --gold-light: #E2C47A;
+  --gold-dim:   rgba(201,168,76,0.1);
+  --white:      #ffffff;
+  --gray-100:   #f7f8fa;
+  --gray-200:   #eef0f3;
+  --gray-400:   #9aa3b0;
+  --gray-600:   #5a6475;
+  --gray-800:   #1e2533;
+  --green:      #27ae60;
+  --green-dim:  rgba(39,174,96,0.1);
+  --red:        #e74c3c;
+  --red-dim:    rgba(231,76,60,0.1);
+  --orange:     #e67e22;
+  --orange-dim: rgba(230,126,34,0.1);
+  --font-display:'Cormorant Garamond','Garamond',serif;
+  --font-body:  'Roboto',sans-serif;
+}
+
+/* ── Page ────────────────────────────────────────────────────────────────── */
+.page-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 600;
+  color: var(--gray-800);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+.page-subtitle {
+  font-family: var(--font-body);
+  font-size: 13px; color: var(--gray-400);
+}
+
+.accounts-count {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px;
+  background: var(--navy-mid);
+  border-radius: 20px;
+  color: #e8dfc8;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+.accounts-count mat-icon { font-size: 16px; width: 16px; height: 16px; color: var(--gold); }
+
+/* ── Loading / Empty ─────────────────────────────────────────────────────── */
+.loading-wrap, .empty-state {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 0; gap: 12px;
+}
+.empty-icon { font-size: 48px; width: 48px; height: 48px; color: var(--gray-200); }
+.empty-text { font-family: var(--font-body); font-size: 14px; color: var(--gray-400); }
+
+/* ── Grid ────────────────────────────────────────────────────────────────── */
+.accounts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.account-card {
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.account-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(26,58,74,0.12);
+  border-color: var(--navy-mid);
+}
+
+/* Top accent line */
+.card-accent {
+  height: 3px;
+  background: linear-gradient(90deg, var(--navy), var(--navy-light));
+}
+.card-accent.accent-epargne {
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+}
+
+/* Card header */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 12px;
+}
+
+.account-type-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  background: rgba(26,58,74,0.08);
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-size: 12px; font-weight: 500;
+  color: var(--navy-mid);
+}
+.account-type-badge mat-icon { font-size: 15px; width: 15px; height: 15px; }
+.account-type-badge.badge-epargne {
+  background: var(--gold-dim);
+  color: #8B6914;
+}
+
+/* Status */
+.account-status {
+  display: flex; align-items: center; gap: 5px;
+  font-family: var(--font-body);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+.status-active  { color: var(--green); }
+.status-active  .status-dot { background: var(--green); }
+.status-blocked { color: var(--orange); }
+.status-blocked .status-dot { background: var(--orange); }
+.status-closed  { color: var(--gray-400); }
+.status-closed  .status-dot { background: var(--gray-400); }
+
+/* RIB */
+.account-rib {
+  padding: 0 18px 12px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.rib-label {
+  font-family: var(--font-body);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--gray-400);
+  text-transform: uppercase;
+}
+.rib-value {
+  font-family: 'Courier New', monospace;
+  font-size: 13px; color: var(--gray-600);
+  letter-spacing: 0.05em;
+}
+
+/* Balance */
+.account-balance {
+  padding: 14px 18px;
+  background: var(--gray-100);
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.balance-label {
+  font-family: var(--font-body);
+  font-size: 11px; color: var(--gray-400);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.balance-value {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 600;
+  color: var(--navy);
+  letter-spacing: 0.02em;
+}
+
+/* Footer */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+}
+.card-date {
+  font-family: var(--font-body);
+  font-size: 11px; color: var(--gray-400);
+}
+.arrow-icon {
+  font-size: 18px; width: 18px; height: 18px;
+  color: var(--navy-mid);
+  transition: transform 0.2s;
+}
+.account-card:hover .arrow-icon { transform: translateX(4px); }

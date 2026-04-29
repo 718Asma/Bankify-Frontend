@@ -64,12 +64,49 @@ export const routes: Routes = [
       },
 
       // TODO sprint2: uncomment as components are created
-      // { path: 'accounts',      ... AccountListComponent    }
-      // { path: 'accounts/:rib', ... AccountDetailComponent  }
-      // { path: 'transfer',      ... TransferComponent       }
-      // { path: 'deposit',       ... DepositComponent        }
-      // { path: 'withdraw',      ... WithdrawComponent       }
-      // { path: 'statement',     ... StatementComponent      }
+      {
+        path: 'accounts',
+        canActivate: [roleGuard],
+        data: { roles: ['CLIENT'] },
+        loadComponent: () =>
+        import('./features/client/account-list/account-list.component').then(m => m.AccountListComponent),
+      },
+      {
+        path: 'accounts/:rib',
+        canActivate: [roleGuard],
+        data: { roles: ['CLIENT'] },
+        loadComponent: () =>
+        import('./features/client/account-detail/account-detail.component').then(m => m.AccountDetailComponent),
+      },
+      {
+      path: 'transfer',
+      canActivate: [roleGuard],
+      data: { roles: ['CLIENT'] },
+      loadComponent: () =>
+        import('./features/client/transfer/transfer.component').then(m => m.TransferComponent),
+    },
+    {
+      path: 'deposit',
+      canActivate: [roleGuard],
+      data: { roles: ['CLIENT'] },
+      loadComponent: () =>
+        import('./features/client/deposit/deposit.component').then(m => m.DepositComponent),
+    },
+    {
+      path: 'withdraw',
+      canActivate: [roleGuard],
+      data: { roles: ['CLIENT'] },
+      loadComponent: () =>
+        import('./features/client/withdraw/withdraw.component').then(m => m.WithdrawComponent),
+    },
+
+     {
+      path: 'statement',
+      canActivate: [roleGuard],
+      data: { roles: ['CLIENT'] },
+      loadComponent: () =>
+      import('./features/client/statement/statement.component').then(m => m.StatementComponent),
+    },
     ],
   },
 
