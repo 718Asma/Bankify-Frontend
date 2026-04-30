@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <!-- Result -->
+  <!-- Result search (single client) -->
   <ng-container *ngIf="searched && !loading">
 
     <!-- Not found -->
@@ -47,22 +47,22 @@
       </button>
     </div>
 
-    <!-- Client card -->
+    <!-- Client card (search result) -->
     <div class="client-card" *ngIf="result !== null">
       <div class="card-accent"></div>
       <div class="card-body">
 
-        <!-- Avatar + info -->
         <div class="card-left">
           <div class="client-avatar">{{ initials(result) }}</div>
           <div class="client-info">
             <div class="client-name">{{ result.prenom }} {{ result.nom }}</div>
             <div class="client-cin">CIN : {{ result.cin }}</div>
-            <div class="client-role-badge">{{ result.role === 'ROLE_CLIENT' ? 'CLIENT' : 'AGENT' }}</div>
+            <div class="client-role-badge">
+              {{ result.userType === 'ROLE_CLIENT' ? 'CLIENT' : 'AGENT' }}
+            </div>
           </div>
         </div>
 
-        <!-- Details -->
         <div class="card-details">
           <div class="detail-item">
             <mat-icon class="detail-icon">mail_outline</mat-icon>
@@ -82,7 +82,6 @@
           </div>
         </div>
 
-        <!-- Actions -->
         <div class="card-actions">
           <button class="btn-view" [routerLink]="['/app/agent/clients', result.cin]">
             <mat-icon>visibility</mat-icon>
@@ -97,6 +96,53 @@
       </div>
     </div>
 
+  </ng-container>
+
+  <!-- Clients list (filteredClients) -->
+  <ng-container *ngIf="!loading && !searched && filteredClients.length > 0">
+    <div class="client-card" *ngFor="let result of filteredClients">
+      <div class="card-accent"></div>
+      <div class="card-body">
+
+        <div class="card-left">
+          <div class="client-avatar">{{ initials(result) }}</div>
+          <div class="client-info">
+            <div class="client-name">{{ result.prenom }} {{ result.nom }}</div>
+            <div class="client-cin">CIN : {{ result.cin }}</div>
+            <div class="client-role-badge">
+              {{ result.userType === 'ROLE_CLIENT' ? 'CLIENT' : 'AGENT' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="card-details">
+          <div class="detail-item">
+            <mat-icon class="detail-icon">mail_outline</mat-icon>
+            <span>{{ result.email }}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">phone</mat-icon>
+            <span>{{ result.telephone }}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">cake</mat-icon>
+            <span>{{ result.dateNaiss | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">home_outline</mat-icon>
+            <span>{{ result.adresse }}</span>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-view" [routerLink]="['/app/agent/clients', result.cin]">
+            <mat-icon>visibility</mat-icon>
+            <span>Voir</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
   </ng-container>
 
 </div>

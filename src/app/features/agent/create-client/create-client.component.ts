@@ -73,6 +73,7 @@ export class CreateClientComponent {
   }
 
   submit(): void {
+    console.log("hello")
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     if (this.cinAvailable === false) return;
 

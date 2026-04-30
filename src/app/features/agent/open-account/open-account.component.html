@@ -54,7 +54,7 @@
         <p class="form-subtitle">Remplissez les informations pour ouvrir le compte.</p>
       </div>
 
-      <form class="form" (ngSubmit)="submit()" novalidate>
+      <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
 
         <!-- Step 1: CIN lookup -->
         <div class="step-label">

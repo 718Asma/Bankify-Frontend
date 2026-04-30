@@ -23,7 +23,7 @@
         <div class="summary-info">
           <div class="summary-name">{{ client.prenom }} {{ client.nom }}</div>
           <div class="summary-cin">CIN : {{ client.cin }}</div>
-          <div class="summary-role">{{ client.role === 'ROLE_CLIENT' ? 'CLIENT' : 'AGENT' }}</div>
+          <div class="summary-role">{{ client.userType === 'ROLE_CLIENT' ? 'CLIENT' : 'AGENT' }}</div>
         </div>
         <div class="summary-meta">
           <div class="meta-item">

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -15,7 +15,9 @@ import { ClientDetail } from '../../../core/models/agent.models';
   templateUrl: './client-list.component.html',
   styleUrl: './client-list.component.css',
 })
-export class ClientListComponent {
+export class ClientListComponent implements OnInit {
+  allClients: ClientDetail[] = [];
+  filteredClients: ClientDetail[] = [];
   cinQuery = '';
   loading  = false;
   searched = false;
@@ -26,6 +28,21 @@ export class ClientListComponent {
     private notify: NotificationService,
     private router: Router,
   ) {}
+
+  ngOnInit(): void {
+    this.loading = true;
+    this.clientService.getAllClients().subscribe({
+      next: (clients) => {
+        this.allClients      = clients;
+        this.filteredClients = clients;
+        this.loading         = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.notify.error('Impossible de charger les clients.');
+      },
+    });
+  }
 
   search(): void {
     if (!this.cinQuery) return;

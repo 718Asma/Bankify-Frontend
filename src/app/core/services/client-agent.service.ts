@@ -10,6 +10,11 @@ export class ClientAgentService {
 
   constructor(private http: HttpClient) {}
 
+  /** Get all clients */
+  getAllClients(): Observable<ClientDetail[]> {
+      return this.http.get<ClientDetail[]>(`${this.base}/clients/all`);
+  }
+
   /** Create a new client (agent only) */
   createClient(payload: ClientForm): Observable<ClientDetail> {
     return this.http.post<ClientDetail>(`${this.base}/auth/signup`, {

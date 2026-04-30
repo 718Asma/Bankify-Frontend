@@ -50,7 +50,7 @@
         <p class="form-subtitle">Remplissez les informations du nouveau client.</p>
       </div>
 
-      <form class="form" (ngSubmit)="submit()" novalidate>
+      <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
 
         <!-- Row: CIN -->
         <div class="field-group" [class.has-error]="cin.invalid && cin.touched">

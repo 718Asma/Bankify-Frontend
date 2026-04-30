@@ -25,6 +25,11 @@ export interface CurrentUser {
   prenom: string;
 }
 
+export interface ReinitialiserMotDePasseRequest {
+  ancienMotDePasse: string;
+  nouveauMotDePasse: string;
+}
+
 const TOKEN_KEY = 'bankify_token';
 const USER_KEY  = 'bankify_user';
 
@@ -77,5 +82,14 @@ export class AuthService {
   private storeSession(response: LoginResponse): void {
     localStorage.setItem(TOKEN_KEY, response.token);
     localStorage.setItem(USER_KEY, JSON.stringify(response));
+  }
+
+    // ── Change Password ─────────────────────────────────────────────────────────
+
+  reinitialiserMotDePasse(req: ReinitialiserMotDePasseRequest): Observable<void> {
+    return this.http.put<void>(
+      `${environment.apiUrl}/api/clients/mot-de-passe`,
+      req
+    );
   }
 }

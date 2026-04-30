@@ -32,11 +32,11 @@ export class AgentAccountService {
 
   /** Get account by RIB */
   getAccount(rib: string): Observable<AgentCompte> {
-    return this.http.get<AgentCompte>(`${this.base}/${rib}`);
+    return this.http.get<AgentCompte>(`${this.base}/${rib}/details`);
   }
 
   /** Get all accounts for a client */
   getClientAccounts(cin: number): Observable<AgentCompte[]> {
-    return this.http.get<AgentCompte[]>(`${this.base}?clientCin=${cin}`);
+    return this.http.get<AgentCompte[]>(`${this.base}/${cin}`);
   }
 }

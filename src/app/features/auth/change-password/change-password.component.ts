@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NotificationService } from '../../../core/services/notification.service';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../core/services/auth.service';
 
 function passwordsMatch(group: AbstractControl): ValidationErrors | null {
   const newPw   = group.get('newPassword')?.value;
@@ -29,8 +30,9 @@ export class ChangePasswordComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private notify: NotificationService,
     private router: Router,
+    private authService: AuthService,
+    private notify: NotificationService
   ) {
     this.form = this.fb.group({
       currentPassword: ['', [Validators.required]],
@@ -45,25 +47,32 @@ export class ChangePasswordComponent {
   get mismatch(){ return this.form.errors?.['mismatch'] && this.confirm.touched; }
 
   submit(): void {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.loadingSave = true;
-    const body = {
-      ancienMotDePasse: this.form.value.currentPassword,
-      nouveauMotDePasse: this.form.value.newPassword,
-    };
 
-    this.http.patch(`${environment.apiUrl}/api/clients/mot-de-passe`, body).subscribe({
+    const formValue = this.form.getRawValue();
+
+    const body = {
+      ancienMotDePasse: formValue.currentPassword,
+      nouveauMotDePasse: formValue.newPassword
+    };
+    console.log(body);
+
+    this.authService.reinitialiserMotDePasse(body).subscribe({
       next: () => {
         this.loadingSave = false;
-        this.notify.success('Mot de passe modifié avec succès.');
-        this.router.navigate(['/app/profile']);
+        this.notify.success('Mot de passe mis à jour avec succès.');
+        this.form.reset();
       },
-      error: (err) => {
-        this.loadingSave = false;
-        const msg = err.error?.message ?? 'Erreur lors du changement de mot de passe.';
-        this.notify.error(msg);
-      },
+      // error: (err) => {
+      //   this.loadingSave = false;
+      //   const msg = err.error?.message ?? 'Erreur lors de la mise à jour du mot de passe.';
+      //   this.notify.error(msg);
+      // },
     });
   }
 

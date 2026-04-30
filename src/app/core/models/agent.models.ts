@@ -15,10 +15,10 @@ export interface ClientDetail {
   nom:        string;
   prenom:     string;
   email:      string;
+  dateNaiss:  string;
   adresse:    string;
   telephone:  number;
-  dateNaiss:  string;
-  role:       string;
+  userType:       string;
 }
 
 // ── Account (Agent-scoped) ────────────────────────────────────────────────
