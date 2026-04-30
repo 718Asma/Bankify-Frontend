@@ -24,8 +24,8 @@ export interface Transaction {
 export interface Notification {
   id:      number;
   contenu: string;
-  date:    string;
-  lu:      boolean;
+  dateCreation:    string;
+  //lu:      boolean;
 }
 
 // ── Transfer payload ──────────────────────────────────────────────────────

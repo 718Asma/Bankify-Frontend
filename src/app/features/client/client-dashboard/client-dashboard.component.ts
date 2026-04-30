@@ -35,6 +35,7 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private accountService: AccountService,
+    private transactionService: TransactionService,
     private notifService: NotificationApiService,
     private auth: AuthService,
     private router: Router,
@@ -46,32 +47,24 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Load accounts first, then transactions for first account
-    this.accountService.getAccounts().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (accounts) => {
+    forkJoin({
+      accounts: this.accountService.getAccounts(),
+      transactions: this.transactionService.getMesTransactions(),
+      notifications: this.notifService.loadNotifications(),
+    }).pipe(takeUntil(this.destroy$)).subscribe({
+      next: ({ accounts, transactions }) => {
+        // Accounts
         this.accounts = accounts;
         this.totalBalance = accounts.reduce((s, a) => s + a.solde, 0);
         this.accountCount = accounts.length;
 
-        if (accounts.length > 0) {
-          // Load transactions for all accounts using the first active account
-          const activeRib = accounts.find(a => a.statut === 'ACTIF')?.rib ?? accounts[0].rib;
-          forkJoin({
-            transactions: this.accountService.getTransactions(activeRib, { size: 10, page: 0 }),
-            notifications: this.notifService.loadNotifications(),
-          }).pipe(takeUntil(this.destroy$)).subscribe({
-            next: ({ transactions }) => {
-              this.recentTransactions = transactions.content.slice(0, 5);
-              this.lastTxDate = this.recentTransactions[0]?.date ?? null;
-              this.computeChartData(transactions.content);
-              this.loading = false;
-              setTimeout(() => this.renderChart(), 50);
-            },
-            error: () => { this.loading = false; },
-          });
-        } else {
-          this.loading = false;
-        }
+        // Transactions
+        this.recentTransactions = transactions.slice(0, 5);
+        this.lastTxDate = this.recentTransactions[0]?.date ?? null;
+        this.computeChartData(transactions);
+
+        this.loading = false;
+        setTimeout(() => this.renderChart(), 50);
       },
       error: () => { this.loading = false; },
     });

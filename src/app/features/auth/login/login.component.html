@@ -4,10 +4,12 @@
   <div class="left-col">
 
     <!-- Brand -->
-    <div class="brand">
-      <div class="brand-icon"><span>B</span></div>
-      <span class="brand-name">BANKIFY</span>
-    </div>
+    <div class="navbar-brand">
+          <div class="brand-icon">
+            <img src="assets/logo-no.png" alt="logo" />
+          </div>
+          <span class="brand-name">BANKIFY</span>
+        </div>
 
     <!-- Illustration -->
     <div class="illustration-wrap">
@@ -89,6 +91,29 @@
 
       <!-- Form -->
       <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+        <!-- User Type Toggle -->
+        <div class="user-type-toggle">
+          <button
+            type="button"
+            class="toggle-btn"
+            [class.active]="userType === 'CLIENT'"
+            (click)="setUserType('CLIENT')"
+          >
+            <mat-icon>person_outline</mat-icon>
+            <span>Client</span>
+          </button>
+          <button
+            type="button"
+            class="toggle-btn"
+            [class.active]="userType === 'AGENT'"
+            (click)="setUserType('AGENT')"
+          >
+            <mat-icon>badge</mat-icon>
+            <span>Agent</span>
+          </button>
+          <div class="toggle-slider" [class.slide-right]="userType === 'AGENT'"></div>
+        </div>
 
         <!-- email -->
         <div class="field-group" [class.has-error]="email.invalid && email.touched">

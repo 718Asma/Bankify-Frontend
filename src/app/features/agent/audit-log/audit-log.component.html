@@ -20,7 +20,6 @@
     </div>
     <div class="filters-row">
 
-      <!-- Operation type -->
       <div class="filter-field">
         <label>Type d'opération</label>
         <select [(ngModel)]="filterType">
@@ -28,19 +27,16 @@
         </select>
       </div>
 
-      <!-- Date début -->
       <div class="filter-field">
         <label>Date début</label>
         <input type="date" [(ngModel)]="filterDateDebut" />
       </div>
 
-      <!-- Date fin -->
       <div class="filter-field">
         <label>Date fin</label>
         <input type="date" [(ngModel)]="filterDateFin" />
       </div>
 
-      <!-- Page size -->
       <div class="filter-field">
         <label>Par page</label>
         <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
@@ -48,7 +44,6 @@
         </select>
       </div>
 
-      <!-- Actions -->
       <div class="filter-actions">
         <button class="btn-apply" (click)="applyFilters()">
           <mat-icon>search</mat-icon>
@@ -86,6 +81,7 @@
             <th>Compte(s) RIB</th>
             <th>Montant</th>
             <th>Résultat</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -127,6 +123,45 @@
                 <span class="status-dot"></span>
                 {{ getStatusLabel(entry.statut) }}
               </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="td-actions">
+              <ng-container *ngIf="entry.statut === 'EN_ATTENTE'; else noActions">
+                <div class="action-btns">
+
+                  <!-- Approuver -->
+                  <button
+                    class="btn-tx btn-approve"
+                    (click)="approuver(entry)"
+                    [disabled]="actionLoading[entry.id]"
+                    matTooltip="Approuver"
+                  >
+                    <app-loading-spinner *ngIf="actionLoading[entry.id]" />
+                    <ng-container *ngIf="!actionLoading[entry.id]">
+                      <mat-icon>check_circle_outline</mat-icon>
+                    </ng-container>
+                  </button>
+
+                  <!-- Annuler -->
+                  <button
+                    class="btn-tx btn-cancel-tx"
+                    (click)="annuler(entry)"
+                    [disabled]="actionLoading[entry.id]"
+                    matTooltip="Annuler"
+                  >
+                    <app-loading-spinner *ngIf="actionLoading[entry.id]" />
+                    <ng-container *ngIf="!actionLoading[entry.id]">
+                      <mat-icon>cancel_outline</mat-icon>
+                    </ng-container>
+                  </button>
+
+                </div>
+              </ng-container>
+
+              <ng-template #noActions>
+                <span class="no-action">—</span>
+              </ng-template>
             </td>
 
           </tr>

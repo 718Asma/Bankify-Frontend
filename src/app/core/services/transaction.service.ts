@@ -13,6 +13,7 @@ import {
 export class TransactionService {
 
   private readonly base = `${environment.apiUrl}/api/comptes`;
+  private readonly txBase = `${environment.apiUrl}/api/transactions`;
 
   constructor(private http: HttpClient) {}
 
@@ -35,5 +36,9 @@ export class TransactionService {
       `${this.base}/${rib}/retrait`,
       payload
     );
+  }
+
+  getMesTransactions(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.txBase}/mes-transactions`);
   }
 }

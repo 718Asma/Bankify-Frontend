@@ -68,11 +68,11 @@ export class ChangePasswordComponent {
         this.notify.success('Mot de passe mis à jour avec succès.');
         this.form.reset();
       },
-      // error: (err) => {
-      //   this.loadingSave = false;
-      //   const msg = err.error?.message ?? 'Erreur lors de la mise à jour du mot de passe.';
-      //   this.notify.error(msg);
-      // },
+       error: (err) => {
+         this.loadingSave = false;
+         const msg = err.error?.message ?? 'Erreur lors de la mise à jour du mot de passe.';
+         this.notify.error(msg);
+       },
     });
   }
 

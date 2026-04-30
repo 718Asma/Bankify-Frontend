@@ -9,10 +9,12 @@
 
     <!-- LEFT panel -->
     <div class="left-panel">
-      <div class="brand">
-        <div class="brand-icon"><span>B</span></div>
-        <span class="brand-name">BANKIFY</span>
-      </div>
+      <div class="navbar-brand">
+          <div class="brand-icon">
+            <img src="assets/logo-no.png" alt="logo" />
+          </div>
+          <span class="brand-name">BANKIFY</span>
+        </div>
 
       <div class="left-content">
         <!-- Avatar -->
@@ -40,7 +42,7 @@
           </div>
           <div class="info-item">
             <mat-icon class="info-icon">cake</mat-icon>
-            <span>{{ profile?.dateNaissance }}</span>
+            <span>{{ profile?.dateNaiss }}</span>
           </div>
         </div>
 
@@ -63,7 +65,7 @@
           <p class="form-subtitle">Modifiez vos coordonnées ci-dessous.</p>
         </div>
 
-        <form class="form" (ngSubmit)="submit()" novalidate>
+        <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
 
           <!-- Row: prenom + nom -->
           <div class="field-row">
@@ -99,7 +101,7 @@
             </div>
           </div>
 
-          <!-- Row: telephone + dateNaissance -->
+          <!-- Row: telephone + dateNaiss -->
           <div class="field-row">
             <div class="field-group" [class.has-error]="telephone.invalid && telephone.touched">
               <label class="field-label">Téléphone</label>
@@ -113,13 +115,13 @@
               </div>
             </div>
 
-            <div class="field-group" [class.has-error]="dateNaissance.invalid && dateNaissance.touched">
+            <div class="field-group" [class.has-error]="dateNaiss.invalid && dateNaiss.touched">
               <label class="field-label">Date de naissance</label>
               <div class="field-input-wrap">
                 <mat-icon class="field-icon">cake</mat-icon>
-                <input class="field-input" type="date" [formControl]="dateNaissance"/>
+                <input class="field-input" type="date" [formControl]="dateNaiss"/>
               </div>
-              <div class="field-error" *ngIf="dateNaissance.touched && dateNaissance.errors?.['required']">Requis.</div>
+              <div class="field-error" *ngIf="dateNaiss.touched && dateNaiss.errors?.['required']">Requis.</div>
             </div>
           </div>
 

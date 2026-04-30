@@ -2,10 +2,12 @@
 
   <!-- LEFT -->
   <div class="left-panel">
-    <div class="brand">
-      <div class="brand-icon"><span>B</span></div>
-      <span class="brand-name">BANKIFY</span>
-    </div>
+    <div class="navbar-brand">
+          <div class="brand-icon">
+            <img src="assets/logo-no.png" alt="logo" />
+          </div>
+          <span class="brand-name">BANKIFY</span>
+        </div>
     <div class="left-content">
       <div class="op-illustration">
         <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="op-svg">
@@ -47,7 +49,7 @@
         <app-loading-spinner message="Chargement des comptes..." />
       </div>
 
-      <form class="form" (ngSubmit)="submit()" novalidate *ngIf="!loadingAccounts">
+      <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate *ngIf="!loadingAccounts">
 
         <div class="field-group" [class.has-error]="rib.invalid && rib.touched">
           <label class="field-label">Compte bénéficiaire</label>

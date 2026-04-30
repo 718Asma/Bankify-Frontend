@@ -45,15 +45,23 @@
 
 .brand { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; margin-bottom: 40px; }
 .brand-icon {
-  width: 36px; height: 36px;
+  width: 34px;
+  height: 34px;
   border: 1.5px solid var(--gold);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transform: rotate(45deg);
-  background: rgba(201,168,76,0.08);
+  /* background: rgba(201,168,76,0.08); */
+  background-color: white; /* solid bg to prevent transparency issues with rotated box */
+  overflow: hidden; /* 🔥 important */
 }
-.brand-icon span {
-  font-family: var(--font-display); font-size: 17px; font-weight: 700;
-  color: var(--gold); transform: rotate(-45deg); display: block; line-height: 1;
+
+.brand-icon img {
+  width: 125%;          /* slightly bigger to fill rotated box */
+  height: 125%;
+  object-fit: cover;    /* ensures no distortion */
+  transform: rotate(-45deg); /* cancel parent rotation */
 }
 .brand-name {
   font-family: var(--font-display); font-size: 20px; font-weight: 700;

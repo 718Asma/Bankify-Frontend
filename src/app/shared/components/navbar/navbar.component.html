@@ -2,9 +2,11 @@
 
   <!-- Left: Brand -->
   <div class="navbar-brand">
-    <div class="brand-icon"><span><img src="assets/logo.png" height="100%" width="100%"/></span></div>
-    <span class="brand-name">BANKIFY</span>
-  </div>
+          <div class="brand-icon">
+            <img src="assets/logo-no.png" alt="logo" />
+          </div>
+          <span class="brand-name">BANKIFY</span>
+        </div>
 
   <!-- Center: decorative -->
   <div class="navbar-center">
@@ -17,10 +19,47 @@
   <div class="navbar-actions">
 
     <!-- Notification bell -->
-    <button mat-icon-button class="icon-btn" matTooltip="Notifications">
-      <mat-icon class="nav-icon">notifications_none</mat-icon>
-      <span class="notif-dot"></span>
-    </button>
+    <div class="notif-wrapper" (click)="$event.stopPropagation()">
+      <button mat-icon-button class="icon-btn" matTooltip="Notifications" (click)="toggleNotifPanel($event)">
+        <mat-icon class="nav-icon">notifications_none</mat-icon>
+        <span class="notif-dot" *ngIf="notifCount > 0"></span>
+        <span class="notif-badge" *ngIf="notifCount > 0">{{ notifCount > 99 ? '99+' : notifCount }}</span>
+      </button>
+
+      <!-- Notification panel -->
+      <div class="notif-panel" *ngIf="notifPanelOpen">
+        <!-- Panel accent line -->
+        <div class="panel-accent"></div>
+
+        <!-- Header -->
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <mat-icon class="panel-title-icon">notifications_none</mat-icon>
+            <span class="panel-title">Notifications</span>
+          </div>
+          <span class="panel-count" *ngIf="notifCount > 0">{{ notifCount }}</span>
+        </div>
+
+        <!-- Empty state -->
+        <div class="panel-empty" *ngIf="notifications.length === 0">
+          <mat-icon>notifications_off</mat-icon>
+          <span>Aucune notification</span>
+        </div>
+
+        <!-- Notifications list -->
+        <div class="panel-list" *ngIf="notifications.length > 0">
+          <div class="notif-item" *ngFor="let notif of notifications">
+            <div class="notif-icon-wrap">
+              <mat-icon class="notif-icon">info_outline</mat-icon>
+            </div>
+            <div class="notif-body">
+              <p class="notif-contenu">{{ notif.contenu }}</p>
+              <span class="notif-date">{{ notif.dateCreation | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- User menu -->
     <button class="user-chip" [matMenuTriggerFor]="userMenu">

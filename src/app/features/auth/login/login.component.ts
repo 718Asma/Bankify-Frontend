@@ -24,6 +24,7 @@ export class LoginComponent {
   form: FormGroup;
   loading = false;
   showPassword = false;
+  userType: 'CLIENT' | 'AGENT' = 'CLIENT';
 
   constructor(
     private fb: FormBuilder,
@@ -37,29 +38,35 @@ export class LoginComponent {
     });
   }
 
-  get email()        { return this.form.get('email') as FormControl; }
+  get email()    { return this.form.get('email') as FormControl; }
   get password() { return this.form.get('password') as FormControl; }
+
+  setUserType(type: 'CLIENT' | 'AGENT'): void {
+    this.userType = type;
+  }
 
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
 
     const payload = {
       ...this.form.value,
-      userType: 'AGENT'
+      userType: this.userType
     };
 
     this.loading = true;
     this.auth.login(payload).subscribe({
       next: (res) => {
         this.loading = false;
-        const route = '/app/dashboard/agent';
+        const route = this.userType === 'AGENT'
+          ? '/app/dashboard/agent'
+          : '/app/dashboard/client';
         this.router.navigate([route]);
       },
       error: (err) => {
         this.loading = false;
         const msg = err.status === 401
-          ? 'email ou mot de passe incorrect.'
-          : 'Une erreur est survenue. Veuillez rÃ©essayer.';
+          ? 'Email ou mot de passe incorrect.'
+          : 'Une erreur est survenue. Veuillez réessayer.';
         this.notify.error(msg);
       },
     });

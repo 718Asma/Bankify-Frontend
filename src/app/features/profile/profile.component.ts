@@ -9,13 +9,13 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
 import { environment } from '../../../environments/environment';
 
 interface ClientProfile {
-  cin:           string;
-  nom:           string;
-  prenom:        string;
-  email:         string;
-  telephone:     string;
-  adresse:       string;
-  dateNaissance: string;
+  cin:       string;
+  nom:       string;
+  prenom:    string;
+  email:     string;
+  telephone: string;
+  adresse:   string;
+  dateNaiss: string; // yyyy-MM-dd as returned by the backend
 }
 
 @Component({
@@ -40,13 +40,13 @@ export class ProfileComponent implements OnInit {
     private router: Router,
   ) {
     this.form = this.fb.group({
-      cin:           [{ value: '', disabled: true }],
-      nom:           ['', Validators.required],
-      prenom:        ['', Validators.required],
-      email:         ['', [Validators.required, Validators.email]],
-      telephone:     ['', [Validators.required, Validators.pattern(/^\d{8,15}$/)]],
-      adresse:       ['', Validators.required],
-      dateNaissance: ['', Validators.required],
+      cin:       [{ value: '', disabled: true }],
+      nom:       ['', Validators.required],
+      prenom:    ['', Validators.required],
+      email:     ['', [Validators.required, Validators.email]],
+      telephone: ['', [Validators.required, Validators.pattern(/^\d{8,15}$/)]],
+      adresse:   ['', Validators.required],
+      dateNaiss: ['', Validators.required],
     });
   }
 
@@ -54,7 +54,12 @@ export class ProfileComponent implements OnInit {
     this.http.get<ClientProfile>(this.apiUrl).subscribe({
       next: (data) => {
         this.profile = data;
-        this.form.patchValue(data);
+        this.form.patchValue({
+          ...data,
+          // Ensure the date is trimmed to yyyy-MM-dd in case the backend
+          // returns a datetime string like "1990-05-12T00:00:00"
+          dateNaiss: data.dateNaiss ? data.dateNaiss.substring(0, 10) : '',
+        });
         this.loadingData = false;
       },
       error: () => {
@@ -64,12 +69,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  get nom()           { return this.form.get('nom') as FormControl; }
-  get prenom()        { return this.form.get('prenom') as FormControl; }
-  get email()         { return this.form.get('email') as FormControl; }
-  get telephone()     { return this.form.get('telephone') as FormControl; }
-  get adresse()       { return this.form.get('adresse') as FormControl; }
-  get dateNaissance() { return this.form.get('dateNaissance') as FormControl; }
+  get nom()       { return this.form.get('nom') as FormControl; }
+  get prenom()    { return this.form.get('prenom') as FormControl; }
+  get email()     { return this.form.get('email') as FormControl; }
+  get telephone() { return this.form.get('telephone') as FormControl; }
+  get adresse()   { return this.form.get('adresse') as FormControl; }
+  get dateNaiss() { return this.form.get('dateNaiss') as FormControl; }
 
   get initials(): string {
     if (!this.profile) return '?';
@@ -80,8 +85,7 @@ export class ProfileComponent implements OnInit {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
 
     this.loadingSave = true;
-    const body = { ...this.form.getRawValue() };
-    delete body['cin'];
+    const { cin, ...body } = this.form.getRawValue();
 
     this.http.put(this.apiUrl, body).subscribe({
       next: () => {

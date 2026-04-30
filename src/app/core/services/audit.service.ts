@@ -21,4 +21,14 @@ export class AuditService {
 
     return this.http.get<AuditEntry[]>(this.base, { params });
   }
+
+  /** Approuver une transaction EN_ATTENTE */
+  approuverTransaction(id: number): Observable<AuditEntry> {
+    return this.http.put<AuditEntry>(`${this.base}/${id}/approuver`, {});
+  }
+
+  /** Annuler une transaction EN_ATTENTE */
+  annulerTransaction(id: number): Observable<AuditEntry> {
+    return this.http.put<AuditEntry>(`${this.base}/${id}/annuler`, {});
+  }
 }

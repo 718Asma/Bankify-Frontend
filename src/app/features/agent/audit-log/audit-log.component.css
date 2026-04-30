@@ -213,3 +213,57 @@
   .filters-row { flex-direction: column; }
   .filter-field { min-width: 100%; }
 }
+/* ── À AJOUTER à la fin de audit-log.component.css ─────────────────────── */
+
+/* Actions column */
+.td-actions { white-space: nowrap; }
+
+.action-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-tx {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+  flex-shrink: 0;
+}
+
+.btn-tx:hover:not(:disabled) { transform: translateY(-1px); }
+.btn-tx:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-tx mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+/* Approuver — vert */
+.btn-approve {
+  background: var(--green-dim);
+  border: 1.5px solid rgba(39,174,96,0.3);
+  color: var(--green);
+}
+.btn-approve:hover:not(:disabled) {
+  background: rgba(39,174,96,0.2);
+}
+
+/* Annuler — rouge */
+.btn-cancel-tx {
+  background: var(--red-dim);
+  border: 1.5px solid rgba(231,76,60,0.3);
+  color: var(--red);
+}
+.btn-cancel-tx:hover:not(:disabled) {
+  background: rgba(231,76,60,0.2);
+}
+
+/* Cellule vide quand pas d'action */
+.no-action {
+  color: var(--gray-400);
+  font-size: 13px;
+  padding-left: 8px;
+}
