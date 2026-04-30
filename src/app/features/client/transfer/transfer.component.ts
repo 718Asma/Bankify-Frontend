@@ -65,7 +65,12 @@ export class TransferComponent implements OnInit {
     this.dialog.open(ConfirmDialogComponent, { data }).afterClosed().subscribe(confirmed => {
       if (!confirmed) return;
       this.loading = true;
-      this.txService.transfer(this.form.value).subscribe({
+      this.txService.transfer(this.ribSource.value, {
+        ribSource: this.ribSource.value,
+        ribDestination: this.ribDestination.value,
+        montant: this.montant.value,
+        description: this.form.get('description')?.value
+      }).subscribe({
         next: () => {
           this.loading = false;
           this.notify.success('Virement effectué avec succès.');

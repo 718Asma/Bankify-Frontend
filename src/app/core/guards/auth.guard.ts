@@ -10,6 +10,8 @@ export const authGuard: CanActivateFn = () => {
     return true;
   }
 
-  router.navigate(['/login']);
+  // Token absent ou expiré → retour login
+  // Remplace toute navigation arrière vers pages protégées
+  router.navigate(['/login'], { replaceUrl: true });
   return false;
 };

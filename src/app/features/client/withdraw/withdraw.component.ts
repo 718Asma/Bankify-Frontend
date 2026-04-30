@@ -61,7 +61,9 @@ export class WithdrawComponent implements OnInit {
     this.dialog.open(ConfirmDialogComponent, { data }).afterClosed().subscribe(confirmed => {
       if (!confirmed) return;
       this.loading = true;
-      this.txService.withdraw(this.form.value).subscribe({
+      this.txService.withdraw(this.rib.value, {
+        montant: this.montant.value
+      }).subscribe({
         next: () => {
           this.loading = false;
           this.notify.success('Retrait effectué avec succès.');

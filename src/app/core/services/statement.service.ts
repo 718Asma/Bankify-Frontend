@@ -18,13 +18,13 @@ export class StatementService {
 }
 
   /** Trigger browser file download from blob */
-  saveFile(blob: Blob, rib: string): void {
+  // Change saveFile to accept the extra params:
+  saveFile(blob: Blob, rib: string, dateDebut?: string, dateFin?: string): void {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
-
+    const suffix = dateDebut && dateFin ? `_${dateDebut}_${dateFin}` : '';
     anchor.href = url;
-    anchor.download = `releve-${rib}.csv`;
-
+    anchor.download = `releve-${rib}${suffix}.csv`;
     anchor.click();
     URL.revokeObjectURL(url);
   }

@@ -61,7 +61,7 @@ export class DepositComponent implements OnInit {
     this.dialog.open(ConfirmDialogComponent, { data }).afterClosed().subscribe(confirmed => {
       if (!confirmed) return;
       this.loading = true;
-      this.txService.deposit(this.form.value).subscribe({
+      this.txService.deposit(this.rib.value, { montant: this.montant.value }).subscribe({
         next: () => {
           this.loading = false;
           this.notify.success('Dépôt effectué avec succès.');

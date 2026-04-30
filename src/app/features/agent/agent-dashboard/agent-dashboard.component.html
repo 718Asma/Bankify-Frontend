@@ -1,1 +1,151 @@
-<p>agent-dashboard works!</p>
+<!-- Loading -->
+<div class="loading-screen" *ngIf="loading">
+  <app-loading-spinner message="Chargement du tableau de bord..." />
+</div>
+
+<!-- Dashboard -->
+<div class="dashboard-wrap" *ngIf="!loading && stats">
+
+  <!-- Header -->
+  <div class="dash-header">
+    <div class="welcome-block">
+      <div class="welcome-label">Tableau de bord Agent</div>
+      <h1 class="welcome-name">Bonjour, {{ userName }} <span class="wave">👋</span></h1>
+    </div>
+    <div class="header-actions">
+      <button class="btn-action" routerLink="/app/agent/clients">
+        <mat-icon>people_outline</mat-icon>
+        <span>Clients</span>
+      </button>
+      <button class="btn-action primary" routerLink="/app/agent/clients/new">
+        <mat-icon>person_add_alt</mat-icon>
+        <span>Nouveau client</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI cards -->
+  <div class="metrics-row">
+
+    <div class="metric-card accent-navy">
+      <div class="metric-icon-wrap navy-icon">
+        <mat-icon>people_outline</mat-icon>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Total Clients</div>
+        <div class="metric-value num">{{ stats.totalClients }}</div>
+      </div>
+      <div class="metric-bg-icon"><mat-icon>people_outline</mat-icon></div>
+    </div>
+
+    <div class="metric-card accent-gold">
+      <div class="metric-icon-wrap gold-icon">
+        <mat-icon>account_balance</mat-icon>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Comptes ouverts ce mois</div>
+        <div class="metric-value num">{{ stats.comptesOuvertsMois }}</div>
+      </div>
+      <div class="metric-bg-icon"><mat-icon>account_balance</mat-icon></div>
+    </div>
+
+    <div class="metric-card accent-teal">
+      <div class="metric-icon-wrap teal-icon">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Total Opérations</div>
+        <div class="metric-value num">{{ stats.totalOperations }}</div>
+      </div>
+      <div class="metric-bg-icon"><mat-icon>receipt_long</mat-icon></div>
+    </div>
+
+    <div class="metric-card accent-red">
+      <div class="metric-icon-wrap red-icon">
+        <mat-icon>block</mat-icon>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Comptes Bloqués</div>
+        <div class="metric-value num">{{ stats.comptesBlockes }}</div>
+      </div>
+      <div class="metric-bg-icon"><mat-icon>block</mat-icon></div>
+    </div>
+
+  </div>
+
+  <!-- Charts grid -->
+  <div class="charts-grid">
+
+    <!-- Bar chart -->
+    <div class="widget-card chart-bar-card">
+      <div class="widget-header">
+        <div class="widget-title-wrap">
+          <div class="widget-dot"></div>
+          <span class="widget-title">Opérations par jour (30 derniers jours)</span>
+        </div>
+        <a class="widget-link" routerLink="/app/agent/audit">Voir journal</a>
+      </div>
+      <div class="chart-container-bar">
+        <canvas id="opsBarChart"></canvas>
+        <div class="chart-empty" *ngIf="stats.operationsParJour.length === 0">
+          <mat-icon>bar_chart</mat-icon>
+          <span>Aucune donnée</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Donut chart -->
+    <div class="widget-card chart-donut-card">
+      <div class="widget-header">
+        <div class="widget-title-wrap">
+          <div class="widget-dot"></div>
+          <span class="widget-title">Répartition des comptes</span>
+        </div>
+      </div>
+      <div class="chart-container-donut">
+        <canvas id="accountDonutChart"></canvas>
+        <div class="chart-empty" *ngIf="stats.repartitionComptes[0]?.count === 0 && stats.repartitionComptes[1]?.count === 0">
+          <mat-icon>pie_chart</mat-icon>
+          <span>Aucune donnée</span>
+        </div>
+      </div>
+      <!-- Pills -->
+      <div class="donut-pills">
+        <div class="donut-pill navy-pill" *ngFor="let r of stats.repartitionComptes">
+          <span class="pill-val">{{ r.count }}</span>
+          <span class="pill-lbl">{{ r.type }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Quick actions -->
+  <div class="widget-card quick-card">
+    <div class="widget-header">
+      <div class="widget-title-wrap">
+        <div class="widget-dot"></div>
+        <span class="widget-title">Actions rapides</span>
+      </div>
+    </div>
+    <div class="quick-grid">
+      <a class="quick-item" routerLink="/app/agent/clients">
+        <div class="quick-icon navy-bg"><mat-icon>people_outline</mat-icon></div>
+        <span>Gérer clients</span>
+      </a>
+      <a class="quick-item" routerLink="/app/agent/clients/new">
+        <div class="quick-icon gold-bg"><mat-icon>person_add_alt</mat-icon></div>
+        <span>Nouveau client</span>
+      </a>
+      <a class="quick-item" routerLink="/app/agent/accounts/new">
+        <div class="quick-icon teal-bg"><mat-icon>account_balance</mat-icon></div>
+        <span>Ouvrir compte</span>
+      </a>
+      <a class="quick-item" routerLink="/app/agent/audit">
+        <div class="quick-icon red-bg"><mat-icon>history</mat-icon></div>
+        <span>Journal d'audit</span>
+      </a>
+    </div>
+  </div>
+
+</div>

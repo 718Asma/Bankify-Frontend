@@ -28,6 +28,7 @@ yarn-error.log
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+.vs
 
 # Miscellaneous
 /.angular/cache
@@ -57,7 +58,7 @@ Thumbs.db
 /yarn.lock
 
 # Environment files
-/.env
+/.environments
 
 # Angular CLI and build artefacts
 /.angular-cli.json

@@ -1,0 +1,157 @@
+<div class="page-shell">
+
+  <!-- LEFT panel -->
+  <div class="left-panel">
+    <div class="brand">
+      <div class="brand-icon"><span>B</span></div>
+      <span class="brand-name">BANKIFY</span>
+    </div>
+
+    <div class="left-content">
+      <div class="op-illustration">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="op-svg">
+          <circle cx="100" cy="100" r="80" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
+          <!-- Bank building -->
+          <rect x="65" y="95" width="70" height="55" rx="2" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1"/>
+          <polygon points="58,95 100,65 142,95" fill="#1a3a4a" stroke="#C9A84C" stroke-width="1"/>
+          <rect x="78" y="108" width="10" height="30" rx="1" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+          <rect x="95" y="108" width="10" height="30" rx="1" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+          <rect x="112" y="108" width="10" height="30" rx="1" fill="#0f2535" stroke="#C9A84C" stroke-width="0.5"/>
+          <!-- Plus badge -->
+          <circle cx="142" cy="68" r="16" fill="#0f2535" stroke="#C9A84C" stroke-width="1.2"/>
+          <path d="M142 61 L142 75 M135 68 L149 68" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+          <!-- Sparkles -->
+          <circle cx="45" cy="55" r="2" fill="#C9A84C" opacity="0.5"/>
+          <circle cx="158" cy="148" r="1.5" fill="#C9A84C" opacity="0.4"/>
+          <circle cx="42" cy="150" r="1.5" fill="#C9A84C" opacity="0.3"/>
+        </svg>
+      </div>
+
+      <div class="left-text">
+        <h2 class="left-title">Ouvrir un compte</h2>
+        <p class="left-sub">Créez un nouveau compte bancaire pour un client existant.</p>
+      </div>
+
+      <div class="tips">
+        <div class="tip-item"><div class="tip-dot"></div><span>Recherchez le client par CIN</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Choisissez le type de compte</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>RIB généré automatiquement</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Dépôt initial optionnel</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT panel -->
+  <div class="right-panel">
+    <div class="form-wrap">
+
+      <div class="form-header">
+        <button class="btn-back" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Retour</span>
+        </button>
+        <h1 class="form-title">Nouveau compte</h1>
+        <p class="form-subtitle">Remplissez les informations pour ouvrir le compte.</p>
+      </div>
+
+      <form class="form" (ngSubmit)="submit()" novalidate>
+
+        <!-- Step 1: CIN lookup -->
+        <div class="step-label">
+          <span class="step-num">1</span>
+          <span>Identifier le client</span>
+        </div>
+
+        <div class="field-group" [class.has-error]="cin.invalid && cin.touched && !selectedClient">
+          <label class="field-label">Numéro CIN du client</label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">badge</mat-icon>
+            <input class="field-input" type="text" inputmode="numeric"
+              placeholder="Ex: 12345678"
+              [formControl]="cin"
+              (keydown.enter)="lookupClient()" />
+            <button type="button" class="btn-lookup" (click)="lookupClient()" [disabled]="cinChecking || !cin.value">
+              <mat-icon *ngIf="!cinChecking">search</mat-icon>
+              <app-loading-spinner *ngIf="cinChecking" />
+            </button>
+          </div>
+          <div class="field-error" *ngIf="cin.touched && cin.errors?.['required']">Requis.</div>
+          <div class="field-error" *ngIf="cinError">{{ cinError }}</div>
+        </div>
+
+        <!-- Client card (found) -->
+        <div class="client-found-card" *ngIf="selectedClient">
+          <div class="client-avatar">
+            {{ selectedClient.prenom[0] }}{{ selectedClient.nom[0] }}
+          </div>
+          <div class="client-info">
+            <div class="client-name">{{ selectedClient.prenom }} {{ selectedClient.nom }}</div>
+            <div class="client-meta">CIN {{ selectedClient.cin }} · {{ selectedClient.email }}</div>
+          </div>
+          <mat-icon class="check-icon">check_circle</mat-icon>
+        </div>
+
+        <!-- Step 2: Account form -->
+        <div class="step-label" [class.step-disabled]="!selectedClient">
+          <span class="step-num">2</span>
+          <span>Configurer le compte</span>
+        </div>
+
+        <!-- Account type -->
+        <div class="field-group" [class.has-error]="type.invalid && type.touched">
+          <label class="field-label">Type de compte</label>
+          <div class="type-selector">
+            <button type="button"
+              class="type-btn"
+              [class.type-active]="type.value === 'COURANT'"
+              (click)="type.setValue('COURANT')">
+              <mat-icon>account_balance</mat-icon>
+              <span class="type-label">Courant</span>
+              <span class="type-desc">Opérations quotidiennes</span>
+            </button>
+            <button type="button"
+              class="type-btn"
+              [class.type-active]="type.value === 'EPARGNE'"
+              [class.type-epargne]="type.value === 'EPARGNE'"
+              (click)="type.setValue('EPARGNE')">
+              <mat-icon>savings</mat-icon>
+              <span class="type-label">Épargne</span>
+              <span class="type-desc">Placement et intérêts</span>
+            </button>
+          </div>
+          <div class="field-error" *ngIf="type.touched && type.errors?.['required']">Sélectionnez un type.</div>
+        </div>
+
+        <!-- Initial deposit -->
+        <div class="field-group">
+          <label class="field-label">Dépôt initial (TND) <span class="optional-badge">Optionnel</span></label>
+          <div class="field-input-wrap">
+            <mat-icon class="field-icon">payments</mat-icon>
+            <input class="field-input" type="number" placeholder="0.00" min="0" [formControl]="soldeInitial" />
+          </div>
+          <div class="field-error" *ngIf="soldeInitial.errors?.['min']">Montant ≥ 0.</div>
+        </div>
+
+        <!-- RIB info box -->
+        <div class="info-box">
+          <mat-icon class="info-icon">info_outline</mat-icon>
+          <p>Le RIB sera généré automatiquement à la soumission du formulaire.</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="goBack()">Annuler</button>
+          <button type="submit" class="btn-submit" [disabled]="!canSubmit">
+            <app-loading-spinner *ngIf="loading" />
+            <ng-container *ngIf="!loading">
+              <span>Ouvrir le compte</span>
+              <mat-icon>account_balance</mat-icon>
+            </ng-container>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

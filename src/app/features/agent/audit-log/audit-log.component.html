@@ -1,0 +1,149 @@
+<div class="page-wrap">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Journal d'Audit</h1>
+      <p class="page-subtitle">Historique de toutes vos opérations bancaires.</p>
+    </div>
+    <div class="total-badge" *ngIf="!loading">
+      <mat-icon>history</mat-icon>
+      <span>{{ totalElements }} opération(s)</span>
+    </div>
+  </div>
+
+  <!-- Filters card -->
+  <div class="filters-card">
+    <div class="filters-title">
+      <mat-icon>filter_list</mat-icon>
+      <span>Filtres</span>
+    </div>
+    <div class="filters-row">
+
+      <!-- Operation type -->
+      <div class="filter-field">
+        <label>Type d'opération</label>
+        <select [(ngModel)]="filterType">
+          <option *ngFor="let op of OPERATION_TYPES" [value]="op.value">{{ op.label }}</option>
+        </select>
+      </div>
+
+      <!-- Date début -->
+      <div class="filter-field">
+        <label>Date début</label>
+        <input type="date" [(ngModel)]="filterDateDebut" />
+      </div>
+
+      <!-- Date fin -->
+      <div class="filter-field">
+        <label>Date fin</label>
+        <input type="date" [(ngModel)]="filterDateFin" />
+      </div>
+
+      <!-- Page size -->
+      <div class="filter-field">
+        <label>Par page</label>
+        <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+          <option *ngFor="let s of PAGE_SIZES" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+      <!-- Actions -->
+      <div class="filter-actions">
+        <button class="btn-apply" (click)="applyFilters()">
+          <mat-icon>search</mat-icon>
+          Appliquer
+        </button>
+        <button class="btn-reset" (click)="resetFilters()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Table card -->
+  <div class="table-card">
+
+    <!-- Loading -->
+    <div class="loading-wrap" *ngIf="loading">
+      <app-loading-spinner message="Chargement du journal..." />
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="!loading && pagedEntries.length === 0">
+      <mat-icon>history_toggle_off</mat-icon>
+      <p>Aucune opération enregistrée pour les filtres sélectionnés.</p>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap" *ngIf="!loading && pagedEntries.length > 0">
+      <table class="audit-table">
+        <thead>
+          <tr>
+            <th>Date / Heure</th>
+            <th>Type d'opération</th>
+            <th>Compte(s) RIB</th>
+            <th>Montant</th>
+            <th>Résultat</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of pagedEntries">
+
+            <!-- Date -->
+            <td class="td-date">
+              <span class="date-val">{{ entry.dateRealisation | date:'dd/MM/yyyy' }}</span>
+            </td>
+
+            <!-- Type -->
+            <td class="td-type">
+              <div class="type-badge" [ngClass]="getTypeClass(entry.type)">
+                <mat-icon>{{ getTypeIcon(entry.type) }}</mat-icon>
+                <span>{{ entry.type }}</span>
+              </div>
+            </td>
+
+            <!-- RIBs -->
+            <td class="td-ribs">
+              <div class="ribs-list">
+                <span class="rib-chip"
+                  *ngFor="let rib of entry.compteRibs"
+                  [routerLink]="['/app/agent/accounts', rib]">
+                  {{ rib }}
+                </span>
+                <span class="rib-empty" *ngIf="!entry.compteRibs || entry.compteRibs.length === 0">—</span>
+              </div>
+            </td>
+
+            <!-- Montant -->
+            <td class="td-amount">
+              {{ entry.montant | number:'1.2-2' }} TND
+            </td>
+
+            <!-- Statut -->
+            <td class="td-status">
+              <span class="status-badge" [ngClass]="getStatusClass(entry.statut)">
+                <span class="status-dot"></span>
+                {{ getStatusLabel(entry.statut) }}
+              </span>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="!loading && totalPages > 1">
+      <button class="pg-btn" (click)="prevPage()" [disabled]="currentPage === 0">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <span class="pg-info">{{ currentPage + 1 }} / {{ totalPages }}</span>
+      <button class="pg-btn" (click)="nextPage()" [disabled]="currentPage === totalPages - 1">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+  </div>
+</div>

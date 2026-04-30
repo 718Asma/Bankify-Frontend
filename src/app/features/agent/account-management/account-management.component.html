@@ -1,0 +1,192 @@
+<div class="page-wrap">
+
+  <div class="loading-wrap" *ngIf="loadingData">
+    <app-loading-spinner message="Chargement du compte..." />
+  </div>
+
+  <ng-container *ngIf="!loadingData && account">
+
+    <button class="btn-back" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      <span>Retour client</span>
+    </button>
+
+    <!-- Summary card -->
+    <div class="summary-card">
+      <div class="card-accent" [ngClass]="'accent-' + account.status.toLowerCase()"></div>
+      <div class="summary-body">
+        <div class="summary-left">
+          <div class="type-badge" [class.badge-epargne]="account.type === 'EPARGNE'">
+            <mat-icon>{{ account.type === 'EPARGNE' ? 'savings' : 'account_balance' }}</mat-icon>
+            <span>Compte {{ account.type === 'EPARGNE' ? 'Épargne' : 'Courant' }}</span>
+          </div>
+          <div class="account-rib">{{ account.rib }}</div>
+          <div class="account-date">Ouvert le {{ account.dateCreation | date:'dd MMMM yyyy' }}</div>
+        </div>
+        <div class="summary-center">
+          <div class="balance-label">Solde</div>
+          <div class="balance-value">{{ account.solde | number:'1.2-2' }} <span class="balance-currency">TND</span></div>
+        </div>
+        <div class="summary-right">
+          <div class="status-badge" [ngClass]="getStatusClass(account.status)">
+            <span class="status-dot"></span>
+            <span>{{ getStatusLabel(account.status) }}</span>
+          </div>
+          <div class="client-ref">Client CIN : {{ account.clientCin }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block / Unblock actions -->
+    <div class="actions-card">
+      <div class="actions-header">
+        <div class="actions-title">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Actions administratives</span>
+        </div>
+      </div>
+      <div class="actions-body">
+        <ng-container *ngIf="account.status === 'ACTIF'">
+          <div class="action-row">
+            <div class="action-info">
+              <div class="action-name">Bloquer le compte</div>
+              <div class="action-desc">Le client ne pourra plus effectuer d'opérations sur ce compte.</div>
+            </div>
+            <button class="btn-action btn-block" (click)="blockAccount()" [disabled]="loadingAction">
+              <app-loading-spinner *ngIf="loadingAction" />
+              <ng-container *ngIf="!loadingAction">
+                <mat-icon>block</mat-icon><span>Bloquer</span>
+              </ng-container>
+            </button>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="account.status === 'BLOQUE'">
+          <div class="action-row">
+            <div class="action-info">
+              <div class="action-name">Débloquer le compte</div>
+              <div class="action-desc">Restaurer l'accès du client à ce compte.</div>
+            </div>
+            <button class="btn-action btn-unblock" (click)="unblockAccount()" [disabled]="loadingAction">
+              <app-loading-spinner *ngIf="loadingAction" />
+              <ng-container *ngIf="!loadingAction">
+                <mat-icon>lock_open</mat-icon><span>Débloquer</span>
+              </ng-container>
+            </button>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="account.status === 'FERME'">
+          <div class="closed-notice">
+            <mat-icon>info_outline</mat-icon>
+            <span>Ce compte est fermé. Aucune action n'est possible.</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Danger zone: Close account -->
+    <div class="danger-card" *ngIf="account.status !== 'FERME'">
+      <div class="danger-header">
+        <mat-icon>warning_amber</mat-icon>
+        <span>Zone dangereuse</span>
+      </div>
+      <div class="danger-body">
+        <div class="danger-info">
+          <div class="danger-title">Fermer le compte</div>
+          <div class="danger-desc">Cette action est irréversible. Le compte sera définitivement fermé.</div>
+        </div>
+        <button class="btn-close-account" (click)="openCloseDialog()" [disabled]="loadingAction">
+          <mat-icon>delete_forever</mat-icon>
+          <span>Fermer le compte</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Info grid -->
+    <div class="info-card">
+      <div class="info-card-header">Détails du compte</div>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">RIB</span>
+          <span class="info-value mono">{{ account.rib }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Type</span>
+          <span class="info-value">{{ account.type }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Statut</span>
+          <span class="info-value">{{ getStatusLabel(account.status) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Solde</span>
+          <span class="info-value">{{ account.solde | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Date d'ouverture</span>
+          <span class="info-value">{{ account.dateCreation | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">CIN Client</span>
+          <span class="info-value">{{ account.clientCin }}</span>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+</div>
+
+<!-- ── Close account custom dialog ────────────────────────────────────────── -->
+<div class="dialog-overlay" *ngIf="showCloseDialog" (click)="cancelCloseDialog()">
+  <div class="close-dialog" (click)="$event.stopPropagation()">
+
+    <div class="close-dialog-accent"></div>
+
+    <div class="close-dialog-header">
+      <div class="close-dialog-icon">
+        <mat-icon>warning_amber</mat-icon>
+      </div>
+      <h2 class="close-dialog-title">Fermer le compte</h2>
+    </div>
+
+    <div class="close-dialog-body">
+      <p class="close-dialog-warning">
+        Cette action est <strong>irréversible</strong>. Le compte sera définitivement fermé et inaccessible.
+      </p>
+
+      <div class="close-dialog-details" *ngIf="account">
+        <div class="close-detail-row">
+          <span class="close-detail-label">RIB</span>
+          <span class="close-detail-value mono">{{ account.rib }}</span>
+        </div>
+        <div class="close-detail-row">
+          <span class="close-detail-label">Solde actuel</span>
+          <span class="close-detail-value">{{ account.solde | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="close-detail-row">
+          <span class="close-detail-label">Type</span>
+          <span class="close-detail-value">{{ account.type }}</span>
+        </div>
+      </div>
+
+      <!-- Inline error (dialog stays open) -->
+      <div class="close-error" *ngIf="closeError">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ closeError }}</span>
+      </div>
+    </div>
+
+    <div class="close-dialog-actions">
+      <button class="close-btn-cancel" (click)="cancelCloseDialog()" [disabled]="loadingClose">
+        Annuler
+      </button>
+      <button class="close-btn-confirm" (click)="confirmCloseAccount()" [disabled]="loadingClose">
+        <app-loading-spinner *ngIf="loadingClose" />
+        <ng-container *ngIf="!loadingClose">
+          <mat-icon>delete_forever</mat-icon>
+          <span>Confirmer la fermeture</span>
+        </ng-container>
+      </button>
+    </div>
+
+  </div>
+</div>

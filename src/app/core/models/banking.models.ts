@@ -30,21 +30,19 @@ export interface Notification {
 
 // ── Transfer payload ──────────────────────────────────────────────────────
 export interface TransferPayload {
-  ribSource:      string;
+  ribSource: string;
   ribDestination: string;
-  montant:        number;
-  description?:   string;
+  montant: number;
+  description?: string;
 }
 
 // ── Deposit payload ───────────────────────────────────────────────────────
 export interface DepositPayload {
-  rib:     string;
   montant: number;
 }
 
 // ── Withdraw payload ──────────────────────────────────────────────────────
 export interface WithdrawPayload {
-  rib:     string;
   montant: number;
 }
 
