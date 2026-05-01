@@ -40,8 +40,9 @@
 
 .brand { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; margin-bottom: 40px; }
 .brand-icon {
-  width: 34px;
-  height: 34px;
+  width: 50px;
+  height: 50px;
+  margin-right: 5px;
   border: 1.5px solid var(--gold);
   display: flex;
   align-items: center;
@@ -165,4 +166,12 @@
   .left-panel { width: 100%; min-height: 220px; }
   .op-illustration { display: none; }
   .field-row { grid-template-columns: 1fr; }
+}
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 36px;
 }
